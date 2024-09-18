@@ -2,9 +2,9 @@
 
 #include "ACommand.hpp"
 
-class User : public ACommand {
+class Topic : public ACommand {
     public:
-        User();
-        ~User();
+        Topic();
+        ~Topic();
         void execute(/*a determiner*/);
 };
