@@ -1,7 +1,4 @@
-#include "Client.hpp"
-#include <algorithm>
-#include <sys/socket.h>
-#include <unistd.h>
+#include "../inc/Client.hpp"
 
 Client::Client(int clientSocket) : socket(clientSocket), isAuthenticated(false) {}
 
@@ -19,7 +16,7 @@ bool Client::isUserAuthenticated() const { return isAuthenticated; }
 const std::vector<Channel*>& Client::getChannels() const { return channels; }
 
 // Setters
-void Client::setSocket(int sock) { sock = socket; }
+void Client::setSocket(int sock) { socket = sock; }
 void Client::setNickname(const std::string& nick) { nickname = nick; }
 void Client::setUsername(const std::string& user) { username = user; }
 void Client::setHostname(const std::string& host) { hostname = host; }

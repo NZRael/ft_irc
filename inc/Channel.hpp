@@ -1,11 +1,6 @@
 #pragma once
 
-#include <algorithm>
-#include <stdexcept>
-#include <string>
-#include <vector>
-#include <map>
-#include "Client.hpp"
+#include "ft_irc.hpp"
 
 class Channel {
 private : 

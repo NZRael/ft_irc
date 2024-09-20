@@ -1,10 +1,10 @@
 #pragma once
 
-#include "ACommand.hpp"
+#include "ft_irc.hpp"
 
 class Pass : public ACommand {
     public:
         Pass();
         ~Pass();
-        void execute(Client* client, const std::string& message);
+        void execute(Client *user, std::string raw_message) const;
 };

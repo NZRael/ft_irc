@@ -1,5 +1,4 @@
-#include "Channel.hpp"
-
+#include "../inc/Channel.hpp"
 
 Channel::Channel(const std::string& channelName) : _name(channelName), _inviteOnly(false), _topicRestricted(false), _userLimit(0) {}
 
@@ -87,26 +86,26 @@ void Channel::setMode(char mode, bool set, Client* user, const std::string& para
 				broadcastMessage(user->getNickname() + " set channel " + _name + " -k");
 			}
 			break;
-		case 'o':
-			if (!parameter.empty()) {
-				Client* targetUser = server.getUserByNick(parameter);
-				if (targetUser && hasUser(targetUser)) {
-					if (set) {
-						addOperator(targetUser);
-						broadcastMessage(user->getNickname() + " gives channel operator status to " + targetUser->getNickname());
-					} else {
-						removeOperator(targetUser);
-						broadcastMessage(user->getNickname() + " removes channel operator status from " + targetUser->getNickname());
-					}
-				}
-			}
-			break;
+		// case 'o':
+		// 	if (!parameter.empty()) {
+		// 		Client* targetUser = server.getUserByNick(parameter);
+		// 		if (targetUser && hasUser(targetUser)) {
+		// 			if (set) {
+		// 				addOperator(targetUser);
+		// 				broadcastMessage(user->getNickname() + " gives channel operator status to " + targetUser->getNickname());
+		// 			} else {
+		// 				removeOperator(targetUser);
+		// 				broadcastMessage(user->getNickname() + " removes channel operator status from " + targetUser->getNickname());
+		// 			}
+		// 		}
+		// 	}
+		// 	break;
 		case 'l':
 			if (set && !parameter.empty()) 
 			{
 				try 
 				{
-					int newLimit = std::stoi(parameter);
+					int newLimit = std::atoi(parameter.c_str());
 					if (newLimit < 0) {
 						// 501 : ERR_UMODEUNKNOWNFLAG (Mode inconnu)
             			user->sendMessage(":server 501 " + user->getNickname() + " :Cannot set negative user limit");
@@ -135,7 +134,7 @@ void Channel::setMode(char mode, bool set, Client* user, const std::string& para
 			 else 
 			{
     			// 324 : RPL_CHANNELMODEIS (Réponse pour afficher le mode actuel)
-    			user->sendMessage(":server 324 " + user->getNickname() + " " + _name + " +l " + std::to_string(_userLimit));
+    			user->sendMessage(":server 324 " + user->getNickname() + " " + _name + " +l " + intToString(_userLimit));
 			}
 			break;
 	}

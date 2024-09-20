@@ -1,7 +1,4 @@
-#include "ACommand.hpp"
-#include "Server.hpp"
-#include <iostream>
-#include <cstdlib>
+#include "inc/ft_irc.hpp"
 
 int main(int argc, char* argv[]) {
     if (argc != 3) {

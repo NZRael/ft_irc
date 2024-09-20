@@ -1,10 +1,6 @@
 #pragma once
 
-#include <string>
-#include <vector>
-#include "Server.hpp"
-
-class Channel;
+#include "ft_irc.hpp"
 
 class Client {
 private:

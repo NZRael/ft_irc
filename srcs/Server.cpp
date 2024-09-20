@@ -1,4 +1,13 @@
-#include "Server.hpp"
+#include "../inc/Server.hpp"
+#include "../inc/Join.hpp"
+#include "../inc/Nick.hpp"
+#include "../inc/Pass.hpp"
+#include "../inc/Privmsg.hpp"
+#include "../inc/Topic.hpp"
+#include "../inc/User.hpp"
+#include "../inc/Mode.hpp"
+#include "../inc/Invite.hpp"
+#include "../inc/Kick.hpp"
 
 std::string intToString(int value) {
     std::stringstream ss;
@@ -32,7 +41,7 @@ void Server::run() {
         for (size_t i = 0; i < fds.size(); ++i) {
             if (fds[i].revents & POLLIN) {
                 if (fds[i].fd == serverSocket) {
-                    handleNewConnection(fds)
+                    handleNewConnection(fds);
                 } else {
                     handleClientMessage(fds, i);
                 }
@@ -76,7 +85,7 @@ void Server::handleNewConnection(std::vector<pollfd>& fds) {
     } else {
         char clientIP[INET_ADDRSTRLEN];
         inet_ntop(AF_INET, &(clientAddr.sin_addr), clientIP, INET_ADDRSTRLEN);
-        std::string clientId = std::string(clientIP) + ":" + std::to_string(ntohs(clientAddr.sin_port));
+        std::string clientId = std::string(clientIP) + ":" + intToString(ntohs(clientAddr.sin_port));
         
         std::cout << "Nouvelle connexion acceptée de " << clientId << std::endl;
         
@@ -111,13 +120,13 @@ void Server::handleClientMessage(std::vector<pollfd>& fds, size_t index) {
 void Server::initCommand() {
     this->command.push_back(new Nick());
     this->command.push_back(new User());
-    this->command.push_back(new Pass());
     this->command.push_back(new Privmsg());
     this->command.push_back(new Invite());
     this->command.push_back(new Kick());
     this->command.push_back(new Topic());
     this->command.push_back(new Mode());
     this->command.push_back(new Join());
+    this->command.push_back(new Pass());
 }
 
 // Fonction 

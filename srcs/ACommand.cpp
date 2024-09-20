@@ -1,12 +1,9 @@
-#include "ACommand.hpp"
+#include "../inc/ACommand.hpp"
 
-ACommand::ACommand()
-{
-
-}
+ACommand::ACommand(std::string name) : _name(name){}
 
 ACommand::~ACommand() {}
 
 std::string ACommand::getName() const {
-    return _Name;
+    return _name;
 }

@@ -1,9 +1,9 @@
-#include "Pass.hpp"
+#include "../inc/Pass.hpp"
 
 Pass::Pass() : ACommand("PASS") {}
 
 Pass::~Pass() {}
 
-void Pass::execute(Client* client, const std::string& message) {
-    // Implement the PASS command logic here
+void Pass::execute(Client *user, std::string raw_message) const {
+    // Implémentez la logique de la commande PASS ici
 }
