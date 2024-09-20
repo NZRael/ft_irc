@@ -34,16 +34,20 @@ void Server::run() {
     fds.push_back(serverPollFd);
 
     while (true) {
+        std::cout << "avant poll" << std::endl;
         int ret = poll(&fds[0], fds.size(), -1);
+        std::cout << "après poll" << std::endl;
         if (ret < 0) {
             throw std::runtime_error("Erreur lors de l'appel à poll()");
         }
-
         for (size_t i = 0; i < fds.size(); ++i) {
+            std::cout << "fds[i]: " << fds[i].fd << std::endl;
             if (fds[i].revents & POLLIN) {
                 if (fds[i].fd == serverSocket) {
+                    std::cout << "handleNewConnection" << std::endl;
                     handleNewConnection(fds);
                 } else {
+                    std::cout << "handleClientMessage" << std::endl;
                     handleClientMessage(fds, i);
                 }
             }
