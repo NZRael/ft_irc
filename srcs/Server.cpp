@@ -1,13 +1,13 @@
 #include "../inc/Server.hpp"
-#include "../inc/Join.hpp"
-#include "../inc/Nick.hpp"
-#include "../inc/Pass.hpp"
-#include "../inc/Privmsg.hpp"
-#include "../inc/Topic.hpp"
-#include "../inc/User.hpp"
-#include "../inc/Mode.hpp"
-#include "../inc/Invite.hpp"
-#include "../inc/Kick.hpp"
+// #include "../inc/Join.hpp"
+// #include "../inc/Nick.hpp"
+// #include "../inc/Pass.hpp"
+// #include "../inc/Privmsg.hpp"
+// #include "../inc/Topic.hpp"
+// #include "../inc/User.hpp"
+// #include "../inc/Mode.hpp"
+// #include "../inc/Invite.hpp"
+// #include "../inc/Kick.hpp"
 
 std::string intToString(int value) {
     std::stringstream ss;
@@ -38,6 +38,7 @@ void Server::run() {
         if (ret < 0) {
             throw std::runtime_error("Erreur lors de l'appel à poll()");
         }
+
         for (size_t i = 0; i < fds.size(); ++i) {
             if (fds[i].revents & POLLIN) {
                 if (fds[i].fd == serverSocket) {
@@ -101,59 +102,66 @@ void Server::handleClientMessage(std::vector<pollfd>& fds, size_t index) {
     char buffer[1024];
     int clientSocket = fds[index].fd;
     int bytesRead = recv(clientSocket, buffer, sizeof(buffer) - 1, 0);
-    int index_user = index - 4;
+    size_t index_user = 0;
+    for (; index_user < users.size(); ++index_user) {
+        if (users[index_user]->getSocket() == clientSocket) {
+            break;
+        }
+    }
+    if (index_user == users.size()) {
+        std::cerr << "Erreur : Client non trouvé pour le socket " << clientSocket << std::endl;
+        return;
+    }
     if (bytesRead <= 0) {
-        std::cout << "Connexion fermée pour le client " << users[index_user]->getSocket() << std::endl;
-        // for (std::vector<Client*>::iterator it = users.begin(); it != users.end(); it++){
-        // }
-        free(users[index - 4]);
+        std::cout << "Connexion fermée pour le client n°" << users[index_user]->getSocket() << std::endl;
+        delete users[index_user];
+        users.erase(users.begin() + index_user);
         close(clientSocket);
         fds.erase(fds.begin() + index);
     } else {
         buffer[bytesRead] = '\0';
-        std::cout << "Reçu de " << users[index_user]->getSocket() << " : " << buffer << std::endl;
-        parseMessage(index_user, buffer);
+        std::cout << "Reçu de l'utilisateur n°" << users[index_user]->getSocket() << " : " << buffer << std::endl;
+        //parseMessage(index_user, buffer);
     }
 }
 
 // fonction void qui va instancier la class ACommand avec toutes les commandes ex: this->command.push_back(new JoinCommand());
-void Server::initCommand() {
-    this->command.push_back(new Nick());
-    this->command.push_back(new User());
-    this->command.push_back(new Privmsg());
-    this->command.push_back(new Invite());
-    this->command.push_back(new Kick());
-    this->command.push_back(new Topic());
-    this->command.push_back(new Mode());
-    this->command.push_back(new Join());
-    this->command.push_back(new Pass());
-}
+// void Server::initCommand() {
+//     this->command.push_back(new Nick());
+//     this->command.push_back(new User());
+//     this->command.push_back(new Privmsg());
+//     this->command.push_back(new Invite());
+//     this->command.push_back(new Kick());
+//     this->command.push_back(new Topic());
+//     this->command.push_back(new Mode());
+//     this->command.push_back(new Join());
+//     this->command.push_back(new Pass());
+// }
 
 // Fonction 
-void Server::parseMessage(int index_user, const std::string& raw_message) {
-    if (this->command.empty()) {
-        initCommand();
-    }
-    std::vector<std::string> c_commandes;
-    std::string ligne;
-    std::istringstream iss(raw_message);
-    while (std::getline(iss, ligne)) {
-        c_commandes.push_back(ligne);
-    }
-    for (size_t i = 0; i < c_commandes.size(); i++) {
-        std::istringstream iss(c_commandes[i]);
-        std::string mess;
-        iss >> mess;
-        for (size_t i = 0; i < this->command.size(); i++) {
-            if (mess == this->command[i]->getName()) {
-                std::string reste;
-                std::getline(iss, reste);
-                this->command[i]->execute(users[index_user], reste);
-            }
-        }
-    }
-    return ;
-}
+// void Server::parseMessage(int index_user, const std::string& raw_message) {
+//     if (this->command.empty()) {
+//         initCommand();
+//     }
+//     std::vector<std::string> c_commandes;
+//     std::string ligne;
+//     std::istringstream iss(raw_message);
+//     while (std::getline(iss, ligne)) {
+//         c_commandes.push_back(ligne);
+//     }
+//     for (size_t i = 0; i < c_commandes.size(); i++) {
+//         std::istringstream iss(c_commandes[i]);
+//         std::string mess;
+//         iss >> mess;
+//         for (size_t i = 0; i < this->command.size(); i++) {
+//             if (mess == this->command[i]->getName()) {
+//                 std::string reste;
+//                 std::getline(iss, reste);
+//                 this->command[i]->execute(users[index_user], reste);
+//             }
+//         }
+//     }
+// }
 
 void Server::stop() {
     if (serverSocket != -1) {
@@ -161,7 +169,7 @@ void Server::stop() {
         serverSocket = -1;
     }
     for (size_t i = 0; i < users.size(); ++i) {
-            free(users[i]);
+            delete(users[i]);
     }
     std::cout << "Serveur arrêté." << std::endl;
 }

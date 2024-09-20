@@ -15,6 +15,9 @@
 #include <fcntl.h>
 #include <arpa/inet.h>
 #include <stdexcept>
+#include <cstdlib>
+#include <cstdio>
+#include <fcntl.h>
 
 // Déclarations anticipées
 class Server;
