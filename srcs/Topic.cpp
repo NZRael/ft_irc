@@ -6,5 +6,5 @@ Topic::Topic() : ACommand("TOPIC") {
 Topic::~Topic() {
 }
 
-void Topic::execute(/*a determiner*/) {
+void Topic::execute(Client *user, std::string raw_message) {
 }

@@ -6,6 +6,6 @@ Join::Join() : ACommand("JOIN") {
 Join::~Join() {
 }
 
-void Join::execute(/*a determiner*/) {
+void Join::execute(Client *user, std::string raw_message) {
 
 }

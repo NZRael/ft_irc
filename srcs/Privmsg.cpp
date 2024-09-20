@@ -6,5 +6,5 @@ Privmsg::Privmsg() : ACommand("PRIVMSG") {
 Privmsg::~Privmsg() {
 }
 
-void Privmsg::execute(/*a determiner*/) {
+void Privmsg::execute(Client *user, std::string raw_message) {
 }

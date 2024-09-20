@@ -6,5 +6,5 @@ class Mode : public ACommand {
     public:
         Mode();
         ~Mode();
-        void execute(/*a determiner*/);
+        void execute(Client *user, std::string raw_message);
 };

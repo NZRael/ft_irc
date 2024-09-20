@@ -1,8 +1,9 @@
 #pragma once
 
-//#include "Client.hpp"
+#include "Client.hpp"
 #include "Join.hpp"
 #include "Nick.hpp"
+#include "Pass.hpp"
 #include "Invite.hpp"
 #include "Kick.hpp"
 #include "Topic.hpp"
@@ -15,7 +16,7 @@
 #include <algorithm>
 
 
-class Client; // Forward declaration
+class Client;
 
 class ACommand {
 public:
@@ -23,11 +24,8 @@ public:
     ~ACommand();
 
     std::string getName() const;
-    virtual void execute(/*a determiner*/) = 0;
-
-
+    virtual void execute(Client *user, std::string raw_message) = 0;
 protected:
-
     std::string _Name;
     bool _isValid;
 };

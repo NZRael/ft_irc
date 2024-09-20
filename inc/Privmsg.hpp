@@ -6,5 +6,5 @@ class Privmsg : public ACommand {
     public:
         Privmsg();
         ~Privmsg();
-        void execute(/*a determiner*/);
+        void execute(Client *user, std::string raw_message);
 };

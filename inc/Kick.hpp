@@ -6,5 +6,5 @@ class Kick : public ACommand {
     public:
         Kick();
         ~Kick();
-        void execute(/*a determiner*/);
+        void execute(Client *user, std::string raw_message);
 };

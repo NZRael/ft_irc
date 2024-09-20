@@ -6,5 +6,5 @@ Kick::Kick() : ACommand("KICK") {
 Kick::~Kick() {
 }
 
-void Kick::execute(/*a determiner*/) {
+void Kick::execute(Client *user, std::string raw_message) {
 }

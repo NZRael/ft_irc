@@ -1,5 +1,10 @@
 #include "Server.hpp"
 
+std::string intToString(int value) {
+    std::stringstream ss;
+    ss << value;
+    return ss.str();
+}
 
 Server::Server(int port, const std::string& password) : port(port), password(password), serverSocket(-1) {
     std::cout << "Serveur créé sur le port " << port << std::endl;
@@ -24,11 +29,10 @@ void Server::run() {
         if (ret < 0) {
             throw std::runtime_error("Erreur lors de l'appel à poll()");
         }
-
         for (size_t i = 0; i < fds.size(); ++i) {
             if (fds[i].revents & POLLIN) {
                 if (fds[i].fd == serverSocket) {
-                    handleNewConnection(fds);
+                    handleNewConnection(fds)
                 } else {
                     handleClientMessage(fds, i);
                 }
@@ -80,8 +84,7 @@ void Server::handleNewConnection(std::vector<pollfd>& fds) {
         clientPollFd.fd = clientSocket;
         clientPollFd.events = POLLIN;
         fds.push_back(clientPollFd);
-        clientSockets.push_back(clientSocket);
-        clientMap[clientSocket] = clientId;
+        users.push_back(new Client(clientSocket));
     }
 }
 
@@ -89,45 +92,58 @@ void Server::handleClientMessage(std::vector<pollfd>& fds, size_t index) {
     char buffer[1024];
     int clientSocket = fds[index].fd;
     int bytesRead = recv(clientSocket, buffer, sizeof(buffer) - 1, 0);
+    int index_user = index - 4;
     if (bytesRead <= 0) {
-        std::cout << "Connexion fermée pour le client " << clientMap[clientSocket] << std::endl;
+        std::cout << "Connexion fermée pour le client " << users[index_user]->getSocket() << std::endl;
+        // for (std::vector<Client*>::iterator it = users.begin(); it != users.end(); it++){
+        // }
+        free(users[index - 4]);
         close(clientSocket);
         fds.erase(fds.begin() + index);
-        std::vector<int>::iterator it = std::find(clientSockets.begin(), clientSockets.end(), clientSocket);
-        if (it != clientSockets.end()) {
-            clientSockets.erase(it);
-        }
-        clientMap.erase(clientSocket);
     } else {
         buffer[bytesRead] = '\0';
-        std::cout << "Reçu de " << clientMap[clientSocket] << " : " << buffer << std::endl;
-        parseMessage(buffer);
+        std::cout << "Reçu de " << users[index_user]->getSocket() << " : " << buffer << std::endl;
+        parseMessage(index_user, buffer);
     }
 }
 
 // fonction void qui va instancier la class ACommand avec toutes les commandes ex: this->command.push_back(new JoinCommand());
 void Server::initCommand() {
-    this->command.push_back(new Join());
     this->command.push_back(new Nick());
     this->command.push_back(new User());
+    this->command.push_back(new Pass());
     this->command.push_back(new Privmsg());
     this->command.push_back(new Invite());
     this->command.push_back(new Kick());
     this->command.push_back(new Topic());
     this->command.push_back(new Mode());
+    this->command.push_back(new Join());
 }
 
-bool Server::parseMessage(const std::string& raw_message) {
+// Fonction 
+void Server::parseMessage(int index_user, const std::string& raw_message) {
+    if (this->command.empty()) {
+        initCommand();
+    }
+    std::vector<std::string> c_commandes;
+    std::string ligne;
     std::istringstream iss(raw_message);
-    std::string mess;
-    iss >> mess;
-
-    for (size_t i = 0; i < mess.size(); i++) {
-        if (mess[i] == this->command[i]->getName()) {
-            this->command[i]->execute();
+    while (std::getline(iss, ligne)) {
+        c_commandes.push_back(ligne);
+    }
+    for (size_t i = 0; i < c_commandes.size(); i++) {
+        std::istringstream iss(c_commandes[i]);
+        std::string mess;
+        iss >> mess;
+        for (size_t i = 0; i < this->command.size(); i++) {
+            if (mess == this->command[i]->getName()) {
+                std::string reste;
+                std::getline(iss, reste);
+                this->command[i]->execute(users[index_user], reste);
+            }
         }
     }
-
+    return ;
 }
 
 void Server::stop() {
@@ -135,13 +151,23 @@ void Server::stop() {
         close(serverSocket);
         serverSocket = -1;
     }
-    
-    for (size_t i = 0; i < clientSockets.size(); ++i) {
-        if (clientSockets[i] != -1) {
-            close(clientSockets[i]);
-        }
+    for (size_t i = 0; i < users.size(); ++i) {
+            free(users[i]);
     }
-    clientSockets.clear();
-    
     std::cout << "Serveur arrêté." << std::endl;
+}
+
+//getters//
+
+
+std::string Server::getPassword() const{
+    return(password);
+}
+
+int Server::getPort() const{
+    return(port);
+}
+
+int Server::getServerSocket() const{
+    return(serverSocket);
 }

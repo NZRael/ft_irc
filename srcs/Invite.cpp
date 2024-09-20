@@ -6,5 +6,5 @@ Invite::Invite() : ACommand("INVITE") {
 Invite::~Invite() {
 }
 
-void Invite::execute(/*a determiner*/) {
+void Invite::execute(Client *user, std::string raw_message) {
 }

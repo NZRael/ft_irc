@@ -6,5 +6,5 @@ class Topic : public ACommand {
     public:
         Topic();
         ~Topic();
-        void execute(/*a determiner*/);
+        void execute(Client *user, std::string raw_message);
 };
