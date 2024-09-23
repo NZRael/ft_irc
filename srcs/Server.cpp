@@ -34,20 +34,16 @@ void Server::run() {
     fds.push_back(serverPollFd);
 
     while (true) {
-        std::cout << "avant poll" << std::endl;
         int ret = poll(&fds[0], fds.size(), -1);
-        std::cout << "après poll" << std::endl;
         if (ret < 0) {
             throw std::runtime_error("Erreur lors de l'appel à poll()");
         }
+        ret = 0;
         for (size_t i = 0; i < fds.size(); ++i) {
-            std::cout << "fds[i]: " << fds[i].fd << std::endl;
             if (fds[i].revents & POLLIN) {
                 if (fds[i].fd == serverSocket) {
-                    std::cout << "handleNewConnection" << std::endl;
                     handleNewConnection(fds);
                 } else {
-                    std::cout << "handleClientMessage" << std::endl;
                     handleClientMessage(fds, i);
                 }
             }
@@ -112,7 +108,7 @@ void Server::handleClientMessage(std::vector<pollfd>& fds, size_t index) {
             break;
         }
     }
-    if (index_user == users.size()) {
+    if (index_user >= users.size()) {
         std::cerr << "Erreur : Client non trouvé pour le socket " << clientSocket << std::endl;
         return;
     }
@@ -143,29 +139,29 @@ void Server::handleClientMessage(std::vector<pollfd>& fds, size_t index) {
 // }
 
 // Fonction 
-// void Server::parseMessage(int index_user, const std::string& raw_message) {
-//     if (this->command.empty()) {
-//         initCommand();
-//     }
-//     std::vector<std::string> c_commandes;
-//     std::string ligne;
-//     std::istringstream iss(raw_message);
-//     while (std::getline(iss, ligne)) {
-//         c_commandes.push_back(ligne);
-//     }
-//     for (size_t i = 0; i < c_commandes.size(); i++) {
-//         std::istringstream iss(c_commandes[i]);
-//         std::string mess;
-//         iss >> mess;
-//         for (size_t i = 0; i < this->command.size(); i++) {
-//             if (mess == this->command[i]->getName()) {
-//                 std::string reste;
-//                 std::getline(iss, reste);
-//                 this->command[i]->execute(users[index_user], reste);
-//             }
-//         }
-//     }
-// }
+void Server::parseMessage(int index_user, const std::string& raw_message) {
+    if (this->command.empty()) {
+        initCommand();
+    }
+    std::vector<std::string> c_commandes;
+    std::string ligne;
+    std::istringstream iss(raw_message);
+    while (std::getline(iss, ligne)) {
+        c_commandes.push_back(ligne);
+    }
+    for (size_t i = 0; i < c_commandes.size(); i++) {
+        std::istringstream iss(c_commandes[i]);
+        std::string mess;
+        iss >> mess;
+        for (size_t i = 0; i < this->command.size(); i++) {
+            if (mess == this->command[i]->getName()) {
+                std::string reste;
+                std::getline(iss, reste);
+                this->command[i]->execute(users[index_user], reste, *this);
+            }
+        }
+    }
+}
 
 void Server::stop() {
     if (serverSocket != -1) {
