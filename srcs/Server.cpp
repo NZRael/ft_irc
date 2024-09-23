@@ -143,6 +143,7 @@ void Server::parseMessage(int index_user, const std::string& raw_message) {
     if (this->command.empty()) {
         initCommand();
     }
+    /////////GERER LE CAS DE CAP LS......
     std::vector<std::string> c_commandes;
     std::string ligne;
     std::istringstream iss(raw_message);
@@ -157,6 +158,11 @@ void Server::parseMessage(int index_user, const std::string& raw_message) {
             if (mess == this->command[i]->getName()) {
                 std::string reste;
                 std::getline(iss, reste);
+                (void)index_user;
+                //supprime si besoin tout les espaces qui se trouve au debut de reste
+                reste.erase(0, reste.find_first_not_of(" "));
+                std::cout << "'" << reste << std::endl;
+                std::cout << "Commande : '" << mess << "'" << std::endl;
                 this->command[i]->execute(users[index_user], reste, this);
             }
         }
