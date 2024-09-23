@@ -9,5 +9,5 @@ class Join : public ACommand {
         Join();
         ~Join();
 
-        void execute(Client *user, std::string raw_message) const;
+        void execute(Client *user, std::string raw_message, Server *server) const;
 };

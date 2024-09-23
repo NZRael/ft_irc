@@ -1,13 +1,13 @@
 #include "../inc/Server.hpp"
-// #include "../inc/Join.hpp"
-// #include "../inc/Nick.hpp"
-// #include "../inc/Pass.hpp"
-// #include "../inc/Privmsg.hpp"
-// #include "../inc/Topic.hpp"
-// #include "../inc/User.hpp"
-// #include "../inc/Mode.hpp"
-// #include "../inc/Invite.hpp"
-// #include "../inc/Kick.hpp"
+#include "../inc/Join.hpp"
+#include "../inc/Nick.hpp"
+#include "../inc/Pass.hpp"
+#include "../inc/Privmsg.hpp"
+#include "../inc/Topic.hpp"
+#include "../inc/User.hpp"
+#include "../inc/Mode.hpp"
+#include "../inc/Invite.hpp"
+#include "../inc/Kick.hpp"
 
 std::string intToString(int value) {
     std::stringstream ss;
@@ -99,7 +99,7 @@ void Server::handleNewConnection(std::vector<pollfd>& fds) {
 }
 
 void Server::handleClientMessage(std::vector<pollfd>& fds, size_t index) {
-    char buffer[1024];
+    char buffer[4096];
     int clientSocket = fds[index].fd;
     int bytesRead = recv(clientSocket, buffer, sizeof(buffer) - 1, 0);
     size_t index_user = 0;
@@ -121,22 +121,22 @@ void Server::handleClientMessage(std::vector<pollfd>& fds, size_t index) {
     } else {
         buffer[bytesRead] = '\0';
         std::cout << "Reçu de l'utilisateur n°" << users[index_user]->getSocket() << " : " << buffer << std::endl;
-        //parseMessage(index_user, buffer);
+        parseMessage(index_user, buffer);
     }
 }
 
 // fonction void qui va instancier la class ACommand avec toutes les commandes ex: this->command.push_back(new JoinCommand());
-// void Server::initCommand() {
-//     this->command.push_back(new Nick());
-//     this->command.push_back(new User());
-//     this->command.push_back(new Privmsg());
-//     this->command.push_back(new Invite());
-//     this->command.push_back(new Kick());
-//     this->command.push_back(new Topic());
-//     this->command.push_back(new Mode());
-//     this->command.push_back(new Join());
-//     this->command.push_back(new Pass());
-// }
+void Server::initCommand() {
+    this->command.push_back(new Nick());
+    this->command.push_back(new User());
+    this->command.push_back(new Privmsg());
+    this->command.push_back(new Invite());
+    this->command.push_back(new Kick());
+    this->command.push_back(new Topic());
+    this->command.push_back(new Mode());
+    this->command.push_back(new Join());
+    this->command.push_back(new Pass());
+}
 
 // Fonction 
 void Server::parseMessage(int index_user, const std::string& raw_message) {
@@ -157,7 +157,7 @@ void Server::parseMessage(int index_user, const std::string& raw_message) {
             if (mess == this->command[i]->getName()) {
                 std::string reste;
                 std::getline(iss, reste);
-                this->command[i]->execute(users[index_user], reste, *this);
+                this->command[i]->execute(users[index_user], reste, this);
             }
         }
     }

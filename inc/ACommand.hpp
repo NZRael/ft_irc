@@ -8,7 +8,7 @@ public:
 	virtual ~ACommand();
 
 	std::string getName() const;
-	virtual void execute(Client *user, std::string raw_message) const = 0;
+	virtual void execute(Client *user, std::string raw_message, Server *server) const = 0;
 protected:
 	std::string _name;
 	bool _isValid;
