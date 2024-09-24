@@ -113,7 +113,7 @@ void Server::handleClientMessage(std::vector<pollfd>& fds, size_t index) {
         return;
     }
     if (bytesRead <= 0) {
-        std::cout << "Connexion fermée pour le client n°" << users[index_user]->getSocket() << std::endl;
+        std::cout << "Connexion fermée pour le user n°" << users[index_user]->getSocket() << std::endl;
         delete users[index_user];
         users.erase(users.begin() + index_user);
         close(clientSocket);
@@ -213,4 +213,21 @@ Client * Server::getClientByNick(const std::string& clientName)
             return (*it);
     }
     return NULL;
+}
+
+void Server::addChannel(Channel* channel) {
+    if (channel == NULL) {
+        // canal invalide
+        // a voir quoi faire
+        return;
+    }
+
+    // Vérifier si un canal avec le même nom existe déjà
+    if (getChannelByName(channel->getName()) != NULL) {
+        // le canal existe déjà
+        // a voir quoi faire
+        return;
+    }
+
+    channels.push_back(channel); // ajout
 }

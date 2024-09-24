@@ -143,3 +143,15 @@ void Channel::setMode(char mode, bool set, Client* user, const std::string& para
 bool Channel::checkPassword(const std::string& attemptedPassword) const {
 	return _password.empty() || attemptedPassword == _password;
 }
+
+bool Channel::isInvited(Client* client) const {
+    return _invitedUsers.find(client) != _invitedUsers.end();
+}
+
+void Channel::inviteUser(Client* client) {
+    _invitedUsers.insert(client);
+}
+
+void Channel::removeInvite(Client* client) {
+    _invitedUsers.erase(client);
+}

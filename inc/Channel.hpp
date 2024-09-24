@@ -12,6 +12,7 @@ private :
     bool _inviteOnly;
     bool _topicRestricted;
     unsigned int _userLimit;
+    std::set<Client*> _invitedUsers; // stocker les utilisateurs invités
 
 public :
     Channel(const std::string& channelName);
@@ -36,6 +37,10 @@ public :
     bool addUser(Client* user);
     bool removeUser(Client* user);
     bool hasUser(Client* user) const;
+
+    bool isInvited(Client* client) const;
+    void inviteUser(Client* client);
+    void removeInvite(Client* client);
 
     // Operator management
     void addOperator(Client* user);

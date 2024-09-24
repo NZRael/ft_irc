@@ -16,7 +16,7 @@ void Mode::execute(Client *user, std::string raw_message, Server *server) const{
 		return;
 	}
 
-	Channel *channel = server->getChannelbyName(channelMode);
+	Channel *channel = server->getChannelByName(channelMode);
 	if (!channel)
 	{
 		user->sendMessage(":server 403 " + user->getNickname() + " " + channelMode + " :No such a channel");
