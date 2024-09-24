@@ -16,6 +16,8 @@ public:
 	Channel* getChannelByName(const std::string& channelName);
 	Client * getClientByNick(const std::string& clientName);
 
+	void addChannel(Channel* channel);
+
 private:
 	void setupSocket();
 	void handleNewConnection(std::vector<pollfd>& fds);
