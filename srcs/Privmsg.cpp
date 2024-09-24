@@ -1,14 +1,4 @@
-
-
-
-
-
-
-
-
-Save modified buffer?                                                                                                                                                                                    
- Y Yes
- N No           ^C Cancel#include "../inc/Privmsg.hpp"
+#include "../inc/Privmsg.hpp"
 
 Privmsg::Privmsg() : ACommand("PRIVMSG") {
 }
