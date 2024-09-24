@@ -5,8 +5,8 @@ Pass::Pass() : ACommand("PASS") {}
 Pass::~Pass() {}
 
 void Pass::execute(Client *user, std::string raw_message, Server *server) const {
-    if (user->getPassword()) {
-        user->sendMessage(":server 462 " + user->getNickname() + " :You may not reregister");
+    if (user->isUserAuthenticated()) {
+        user->sendMessage(":server 462 " + user->getNickname() + " :You are already register");
         return;
     }
     if (raw_message.empty()) {
@@ -16,5 +16,5 @@ void Pass::execute(Client *user, std::string raw_message, Server *server) const 
     // std::istringstream iss(raw_message);
     // std::string password;
     // iss >> password;
-    user->setPassword(true);
+    user->setAuthenticated(true);
 }

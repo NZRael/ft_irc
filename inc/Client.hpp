@@ -9,7 +9,6 @@ private:
     std::string username;
     std::string hostname;
     std::string realname;
-    bool        password;
     bool        isAuthenticated;
     std::vector<Channel*> channels;
 
@@ -23,7 +22,6 @@ public:
     const std::string& getUsername() const;
     const std::string& getHostname() const;
     const std::string& getRealname() const;
-    bool getPassword() const;
     bool isUserAuthenticated() const;
     const std::vector<Channel*>& getChannels() const;
 
@@ -33,7 +31,6 @@ public:
     void setUsername(const std::string& user);
     void setHostname(const std::string& host);
     void setRealname(const std::string& real);
-    void setPassword(bool pass);
     void setAuthenticated(bool auth);
 
     // Channel management
@@ -42,10 +39,5 @@ public:
     bool isInChannel(Channel* channel) const;
 
     // Message handling
-    void sendMessage(const std::string& message) const;
-
-    // Nouveau: méthode pour authentifier l'utilisateur
-    bool authenticate(const std::string& password, Server* server);  
-
-    
+    void sendMessage(const std::string& message) const;    
 };
