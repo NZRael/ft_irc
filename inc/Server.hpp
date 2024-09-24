@@ -13,6 +13,8 @@ public:
 	int getPort() const;
 	int getServerSocket() const;
 	void initCommand();
+	Channel* getChannelByName(const std::string& channelName);
+	Client * getClientByNick(const std::string& clientName);
 
 private:
 	void setupSocket();
@@ -24,6 +26,7 @@ private:
 	std::string password;
 	int serverSocket;
 	std::vector<Client *> users;
+	std::vector<Channel*> channels;
 
 	std::vector<ACommand *> command; // initialise les classes de commandes
 };

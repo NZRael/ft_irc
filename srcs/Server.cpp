@@ -194,3 +194,23 @@ int Server::getPort() const{
 int Server::getServerSocket() const{
     return(serverSocket);
 }
+
+Channel* Server::getChannelByName(const std::string& channelName)
+{
+    for (std::vector<Channel*>::iterator it = channels.begin(); it != channels.end(); it ++)
+    {
+        if ((*it)->getName() == channelName)
+            return (*it);
+    }
+    return NULL; 
+}
+
+Client * Server::getClientByNick(const std::string& clientName)
+{
+    for (std::vector<Client*>::iterator it = users.begin(); it != users.end(); it++)
+    {
+        if ((*it)->getNickname() == clientName)
+            return (*it);
+    }
+    return NULL;
+}
