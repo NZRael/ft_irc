@@ -150,6 +150,11 @@ void Server::parseMessage(int index_user, const std::string& raw_message) {
     while (std::getline(iss, ligne)) {
         c_commandes.push_back(ligne);
     }
+    //check si la premiere ligne qu'on recoit est CAP LS alors on renvoi CAP LS et on continue
+    if (c_commandes[0].find("CAP LS") != std::string::npos) {
+        users[index_user]->sendMessage("CAP * LS :multi-prefix");
+        return;
+    }
     for (size_t i = 0; i < c_commandes.size(); i++) {
         std::istringstream iss(c_commandes[i]);
         std::string mess;
