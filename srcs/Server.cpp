@@ -163,6 +163,7 @@ void Server::parseMessage(int index_user, const std::string& raw_message) {
                 std::string reste;
                 std::getline(iss, reste);
                 reste.erase(0, reste.find_first_not_of(" "));
+                reste.erase(reste.find_last_not_of("\r") + 1);
                 this->command[i]->execute(users[index_user], reste, this);
             }
         }

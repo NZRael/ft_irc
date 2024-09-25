@@ -17,7 +17,9 @@ void User::execute(Client *user, std::string raw_message, Server *server) const{
     }
 
     std::getline(iss, realname);
+    realname.erase(0, realname.find_first_not_of(" "));
     if (realname.empty() || realname[0] != ':') {
+        std::cout << "realname: " << realname << std::endl;
         user->sendMessage(":server 461 " + user->getNickname() + " USER :Not enough parameters\r\n");
         return;
     }
@@ -27,13 +29,13 @@ void User::execute(Client *user, std::string raw_message, Server *server) const{
 		return;
 	}
 
-    if (user->isUserAuthenticated()) {
-        user->sendMessage(":server 462 " + user->getNickname() + " :Unauthorized command (already registered)\r\n");
+    if (!user->isUserAuthenticated()) {
+        user->sendMessage(":server 462 " + user->getNickname() + " USER :Unauthorized command (already registered)\r\n");
         return;
     }
 
     if (!isValidUsername(username)) {
-        user->sendMessage("Invalid username");
+        user->sendMessage("Invalid username\r\n");
         return;
     }
 

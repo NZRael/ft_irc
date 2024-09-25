@@ -6,7 +6,7 @@ Pass::~Pass() {}
 
 void Pass::execute(Client *user, std::string raw_message, Server *server) const {
     if (user->isUserAuthenticated()) {
-        user->sendMessage(":server 462 " + user->getNickname() + " :You are already register\r\n");
+        user->sendMessage(":server 462 " + user->getNickname() + " PASS :You are already register\r\n");
         return;
     }
     if (raw_message.empty()) {
@@ -17,7 +17,7 @@ void Pass::execute(Client *user, std::string raw_message, Server *server) const 
     std::string password;
     iss >> password;
     if (password != server->getPassword()) {
-        user->sendMessage(":server 464 " + user->getNickname() + " :Password incorrect\r\n");
+        user->sendMessage(":server 464 " + user->getNickname() + " PASS :Password incorrect\r\n");
         return;
     }
     else
