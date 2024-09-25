@@ -11,13 +11,13 @@ void Privmsg::execute(Client* user, std::string raw_message, Server *server) con
     std::string target, msgContent;
     
     if (!(iss >> target)) {
-        user->sendMessage(":server 411 " + user->getNickname() + " :No recipient given (PRIVMSG)");
+        user->sendMessage(":server 411 " + user->getNickname() + " :No recipient given (PRIVMSG)\r\n");
         return;
     }
 
     std::getline(iss, msgContent);
     if (msgContent.empty() || msgContent[0] != ':') {
-        user->sendMessage(":server 412 " + user->getNickname() + " :No text to send");
+        user->sendMessage(":server 412 " + user->getNickname() + " :No text to send\r\n");
         return;
     }
     msgContent = msgContent.substr(1); // Remove the leading ':'
@@ -26,12 +26,12 @@ void Privmsg::execute(Client* user, std::string raw_message, Server *server) con
         // Message to a channel
         Channel* channel = server->getChannelByName(target);
         if (!channel) {
-            user->sendMessage(":server 403 " + user->getNickname() + " " + target + " :No such channel");
+            user->sendMessage(":server 403 " + user->getNickname() + " " + target + " :No such channel\r\n");
             return;
         }
 
         if (!channel->hasUser(user)) {
-            user->sendMessage(":server 404 " + user->getNickname() + " " + target + " :Cannot send to channel");
+            user->sendMessage(":server 404 " + user->getNickname() + " " + target + " :Cannot send to channel\r\n");
             return;
         }
 
@@ -41,11 +41,11 @@ void Privmsg::execute(Client* user, std::string raw_message, Server *server) con
         // Private message to a user
         Client* targetClient = server->getClientByNick(target);
         if (!targetClient) {
-            user->sendMessage(":server 401 " + user->getNickname() + " " + target + " :No such nick/channel");
+            user->sendMessage(":server 401 " + user->getNickname() + " " + target + " :No such nick/channel\r\n");
             return;
         }
 
-        std::string fullMessage = ":" + user->getNickname() + " PRIVMSG " + target + " :" + msgContent;
+        std::string fullMessage = ":" + user->getNickname() + " PRIVMSG " + target + " :" + msgContent + "\r\n";
         targetClient->sendMessage(fullMessage);
     }
 }

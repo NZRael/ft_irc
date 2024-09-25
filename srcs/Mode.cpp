@@ -12,20 +12,20 @@ void Mode::execute(Client *user, std::string raw_message, Server *server) const{
 
 	if (!(iss >> channelMode >> modeString))
 	{
-		user->sendMessage(":server 461 " + user->getNickname() + " MODE :not enough parameters");
+		user->sendMessage(":server 461 " + user->getNickname() + " MODE :not enough parameters\r\n");
 		return;
 	}
 
 	Channel *channel = server->getChannelByName(channelMode);
 	if (!channel)
 	{
-		user->sendMessage(":server 403 " + user->getNickname() + " " + channelMode + " :No such a channel");
+		user->sendMessage(":server 403 " + user->getNickname() + " " + channelMode + " :No such a channel\r\n");
 		return;
 	}
 
 	if(!channel->isOperator(user))
 	{
-		user->sendMessage(": server " + user->getNickname() + " " + channelMode + " :You're not channel operator");
+		user->sendMessage(": server " + user->getNickname() + " " + channelMode + " :You're not channel operator\r\n");
 		return ;
 	}
 

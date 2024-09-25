@@ -26,24 +26,24 @@ void Nick::execute(Client *user, std::string raw_message, Server *server) const{
 		return;
 	}
 	if (raw_message.empty()) {
-		user->sendMessage(":server 431 * :No nickname given");
+		user->sendMessage(":server 431 * :No nickname given\r\n");
 		return;
 	}
 	if (!isValidNickname(raw_message)) {
-        user->sendMessage(":server 432 * " + raw_message + " :Erroneous nickname");
+        user->sendMessage(":server 432 * " + raw_message + " :Erroneous nickname\r\n");
         return;
     }
 	if (server->isNicknameUsed(raw_message)) {
-        user->sendMessage(":server 433 * " + raw_message + " :Nickname is already in use");
+        user->sendMessage(":server 433 * " + raw_message + " :Nickname is already in use\r\n");
         return;
     }
 	if (user->getNickname().empty()) {
 		user->setNickname(raw_message);
-		user->sendMessage(":" + user->getNickname() + " NICK " + user->getNickname());
+		user->sendMessage(":" + user->getNickname() + " NICK " + user->getNickname() + "\r\n");
 	}
 	else {
 		std::string oldNick = user->getNickname();
 		user->setNickname(raw_message);
-		user->sendMessage(":" + oldNick + " NICK " + user->getNickname());
+		user->sendMessage(":" + oldNick + " NICK " + user->getNickname() + "\r\n");
 	}
 }
