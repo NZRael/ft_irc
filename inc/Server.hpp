@@ -15,6 +15,7 @@ public:
 	void initCommand();
 	Channel* getChannelByName(const std::string& channelName);
 	Client * getClientByNick(const std::string& clientName);
+	bool	isNicknameUsed(const std::string& nick);
 
 	void addChannel(Channel* channel);
 
@@ -27,6 +28,7 @@ private:
 	int port;
 	std::string password;
 	int serverSocket;
+	std::string prefix;
 	std::vector<Client *> users;
 	std::vector<Channel*> channels;
 

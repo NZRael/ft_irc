@@ -9,6 +9,7 @@ private:
     std::string username;
     std::string hostname;
     std::string realname;
+    std::string prefix;
     bool        isAuthenticated;
     std::vector<Channel*> channels;
 
@@ -22,6 +23,7 @@ public:
     const std::string& getUsername() const;
     const std::string& getHostname() const;
     const std::string& getRealname() const;
+    const std::string& getPrefix() const;
     bool isUserAuthenticated() const;
     const std::vector<Channel*>& getChannels() const;
 
@@ -31,6 +33,7 @@ public:
     void setUsername(const std::string& user);
     void setHostname(const std::string& host);
     void setRealname(const std::string& real);
+    void setPrefix(void);
     void setAuthenticated(bool auth);
 
     // Channel management

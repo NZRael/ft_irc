@@ -230,3 +230,12 @@ void Server::addChannel(Channel* channel) {
 
     channels.push_back(channel); // ajout
 }
+
+bool Server::isNicknameUsed(const std::string& nick) {
+    for (std::vector<Client*>::iterator it = users.begin(); it != users.end(); ++it) {
+        if ((*it)->getNickname() == nick) {
+            return true;
+        }
+    }
+    return false;
+}

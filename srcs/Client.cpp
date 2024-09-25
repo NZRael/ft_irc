@@ -12,6 +12,7 @@ const std::string& Client::getNickname() const { return nickname; }
 const std::string& Client::getUsername() const { return username; }
 const std::string& Client::getHostname() const { return hostname; }
 const std::string& Client::getRealname() const { return realname; }
+const std::string& Client::getPrefix() const { return prefix; }
 bool Client::isUserAuthenticated() const { return isAuthenticated; }
 const std::vector<Channel*>& Client::getChannels() const { return channels; }
 
@@ -21,6 +22,9 @@ void Client::setNickname(const std::string& nick) { nickname = nick; }
 void Client::setUsername(const std::string& user) { username = user; }
 void Client::setHostname(const std::string& host) { hostname = host; }
 void Client::setRealname(const std::string& real) { realname = real; }
+void Client::setPrefix(void) {
+    prefix = ":" + nickname + "!" + username + "@" + hostname;
+}
 void Client::setAuthenticated(bool auth) { isAuthenticated = auth; }
 
 // Channel management
