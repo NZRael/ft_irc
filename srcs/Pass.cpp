@@ -13,8 +13,13 @@ void Pass::execute(Client *user, std::string raw_message, Server *server) const 
         user->sendMessage(":server 461 " + user->getNickname() + " PASS :Not enough parameters");
         return;
     }
-    // std::istringstream iss(raw_message);
-    // std::string password;
-    // iss >> password;
-    user->setAuthenticated(true);
+    std::istringstream iss(raw_message);
+    std::string password;
+    iss >> password;
+    if (password != server->getPassword()) {
+        user->sendMessage(":server 464 " + user->getNickname() + " :Password mismatch");
+        return;
+    }
+    else
+        user->setAuthenticated(true);
 }
