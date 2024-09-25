@@ -8,6 +8,7 @@
 #include "../inc/Mode.hpp"
 #include "../inc/Invite.hpp"
 #include "../inc/Kick.hpp"
+#include "../inc/Ping.hpp"
 
 std::string intToString(int value) {
     std::stringstream ss;
@@ -136,6 +137,7 @@ void Server::initCommand() {
     command.push_back(new Mode());
     command.push_back(new Join());
     command.push_back(new Pass());
+    command.push_back(new Ping());
 }
 
 // Fonction 

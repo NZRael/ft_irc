@@ -19,6 +19,7 @@ SRCS = main.cpp \
        $(SRCS_DIR)/Mode.cpp \
        $(SRCS_DIR)/Invite.cpp \
        $(SRCS_DIR)/Kick.cpp \
+       $(SRCS_DIR)/Ping.cpp \
        $(SRCS_DIR)/Topic.cpp
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(notdir $(SRCS:.cpp=.o)))
