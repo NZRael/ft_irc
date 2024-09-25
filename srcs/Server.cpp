@@ -143,7 +143,6 @@ void Server::parseMessage(int index_user, const std::string& raw_message) {
     if (this->command.empty()) {
         initCommand();
     }
-    /////////GERER LE CAS DE CAP LS......
     std::vector<std::string> c_commandes;
     std::string ligne;
     std::istringstream iss(raw_message);
@@ -151,11 +150,11 @@ void Server::parseMessage(int index_user, const std::string& raw_message) {
         c_commandes.push_back(ligne);
     }
     //check si la premiere ligne qu'on recoit est CAP LS alors on renvoi CAP LS et on continue
-    if (c_commandes[0].find("CAP LS") != std::string::npos) {
-        users[index_user]->sendMessage("CAP * LS :multi-prefix\r\n");
-        return;
-    }
     for (size_t i = 0; i < c_commandes.size(); i++) {
+        if (c_commandes[i].find("CAP LS") != std::string::npos) {
+            users[index_user]->sendMessage("CAP * LS\r\n");
+            continue ;
+        }
         std::istringstream iss(c_commandes[i]);
         std::string mess;
         iss >> mess;
