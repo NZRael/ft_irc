@@ -16,14 +16,14 @@ void Privmsg::execute(Client* user, std::string raw_message, Server *server) con
     }
 
     std::getline(iss, msgContent);
+    msgContent.erase(0, msgContent.find_first_not_of(" "));
     if (msgContent.empty() || msgContent[0] != ':') {
         user->sendMessage(":server 412 " + user->getNickname() + " :No text to send\r\n");
         return;
     }
-    msgContent = msgContent.substr(1); // Remove the leading ':'
-
+    msgContent = msgContent.substr(1);
     if (target[0] == '#' || target[0] == '&') {
-        // Message to a channel
+
         Channel* channel = server->getChannelByName(target);
         if (!channel) {
             user->sendMessage(":server 403 " + user->getNickname() + " " + target + " :No such channel\r\n");
@@ -34,7 +34,6 @@ void Privmsg::execute(Client* user, std::string raw_message, Server *server) con
             user->sendMessage(":server 404 " + user->getNickname() + " " + target + " :Cannot send to channel\r\n");
             return;
         }
-
         std::string fullMessage = ":" + user->getNickname() + " PRIVMSG " + target + " :" + msgContent;
         channel->broadcastMessage(fullMessage, user); // on envoie l'user pour pas avoir a afficher le message qu'il vient d'envoyer dans son client
     } else {

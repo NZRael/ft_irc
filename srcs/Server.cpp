@@ -140,7 +140,6 @@ void Server::initCommand() {
     command.push_back(new Ping());
 }
 
-// Fonction 
 void Server::parseMessage(int index_user, const std::string& raw_message) {
     if (this->command.empty()) {
         initCommand();
@@ -151,7 +150,6 @@ void Server::parseMessage(int index_user, const std::string& raw_message) {
     while (std::getline(iss, ligne)) {
         c_commandes.push_back(ligne);
     }
-    //check si la premiere ligne qu'on recoit est CAP LS alors on renvoi CAP LS et on continue
     for (size_t i = 0; i < c_commandes.size(); i++) {
         if (c_commandes[i].find("CAP LS") != std::string::npos) {
             users[index_user]->sendMessage("CAP * LS\r\n");
@@ -182,9 +180,6 @@ void Server::stop() {
     }
     std::cout << "Serveur arrêté." << std::endl;
 }
-
-//getters//
-
 
 std::string Server::getPassword() const{
     return(password);
@@ -231,7 +226,6 @@ void Server::addChannel(Channel* channel) {
         // a voir quoi faire
         return;
     }
-
     channels.push_back(channel); // ajout
 }
 
