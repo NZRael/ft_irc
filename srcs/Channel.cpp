@@ -65,7 +65,7 @@ void Channel::broadcastMessage(const std::string& message, Client* sender)
 	}
 }
 
-void Channel::setMode(char mode, bool set, Client* user, const std::string& parameter)
+void Channel::setMode(char mode, bool set, Client* user, const std::string& parameter, Server* server)
 {
 	switch(mode)
 	{
@@ -78,7 +78,7 @@ void Channel::setMode(char mode, bool set, Client* user, const std::string& para
 			broadcastMessage(user->getNickname() + " set channel " + _name + " " + (set ? "+t" : "-t"));
 			break;
 		case 'k':
-		if (set && !parameter.empty()) {
+			if (set && !parameter.empty()) {
 				_password = parameter;
 				broadcastMessage(user->getNickname() + " set channel " + _name + " +k");
 			} else if (!set) {
@@ -86,20 +86,20 @@ void Channel::setMode(char mode, bool set, Client* user, const std::string& para
 				broadcastMessage(user->getNickname() + " set channel " + _name + " -k");
 			}
 			break;
-		// case 'o':
-		// 	if (!parameter.empty()) {
-		// 		Client* targetUser = server.getUserByNick(parameter);
-		// 		if (targetUser && hasUser(targetUser)) {
-		// 			if (set) {
-		// 				addOperator(targetUser);
-		// 				broadcastMessage(user->getNickname() + " gives channel operator status to " + targetUser->getNickname());
-		// 			} else {
-		// 				removeOperator(targetUser);
-		// 				broadcastMessage(user->getNickname() + " removes channel operator status from " + targetUser->getNickname());
-		// 			}
-		// 		}
-		// 	}
-		// 	break;
+		case 'o':
+			if (!parameter.empty()) {
+				Client* targetUser = server->getClientByNick(parameter);
+				if (targetUser && hasUser(targetUser)) {
+					if (set) {
+						addOperator(targetUser);
+						broadcastMessage(user->getNickname() + " gives channel operator status to " + targetUser->getNickname());
+					} else {
+						removeOperator(targetUser);
+						broadcastMessage(user->getNickname() + " removes channel operator status from " + targetUser->getNickname());
+					}
+				}
+			}
+			break;
 		case 'l':
 			if (set && !parameter.empty()) 
 			{

@@ -38,7 +38,7 @@ void Mode::execute(Client *user, std::string raw_message, Server *server) const{
             adding = false;
         } else {
             iss >> modeParam;
-            channel->setMode(mode, adding, user, modeParam);
+            channel->setMode(mode, adding, user, modeParam, server);
         }
     }
 }

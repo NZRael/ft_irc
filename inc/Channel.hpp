@@ -50,7 +50,7 @@ public :
     void broadcastMessage(const std::string& message, Client* sender = 0);
 
     // Mode management
-    void setMode(char mode, bool set, Client* user, const std::string& parameter);
+    void setMode(char mode, bool set, Client* user, const std::string& parameter, Server* server);
     bool checkPassword(const std::string& attemptedPassword) const;
     
 };
