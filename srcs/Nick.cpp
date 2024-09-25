@@ -7,8 +7,8 @@ Nick::~Nick() {
 }
 
 bool Nick::isValidNickname(const std::string& nick) const {
-    if (nick.length() > 9)
-        return false;
+    if (nick.length() > 9){
+        return false;}
 	const std::string validFirstChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]\\`_^{|}";
     const std::string validChars = validFirstChar + "0123456789-";
     if (validFirstChar.find(nick[0]) == std::string::npos)
@@ -22,11 +22,11 @@ bool Nick::isValidNickname(const std::string& nick) const {
 
 void Nick::execute(Client *user, std::string raw_message, Server *server) const{
 	if (user->isUserAuthenticated() == false) {
-		user->sendMessage(":server 451 * :Enter password first");
+		user->sendMessage("Enter password first");
 		return;
 	}
 	if (raw_message.empty()) {
-		user->sendMessage(":server 431 * :Expected nickname and have none");
+		user->sendMessage(":server 431 * :No nickname given");
 		return;
 	}
 	if (!isValidNickname(raw_message)) {

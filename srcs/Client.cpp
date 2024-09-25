@@ -23,7 +23,7 @@ void Client::setUsername(const std::string& user) { username = user; }
 void Client::setHostname(const std::string& host) { hostname = host; }
 void Client::setRealname(const std::string& real) { realname = real; }
 void Client::setPrefix(void) {
-    prefix = ":" + nickname + "!" + username + "@" + hostname;
+    prefix = ":" + username + "!" + nickname + "@localhost";
 }
 void Client::setAuthenticated(bool auth) { isAuthenticated = auth; }
 

@@ -17,7 +17,7 @@ void Pass::execute(Client *user, std::string raw_message, Server *server) const 
     std::string password;
     iss >> password;
     if (password != server->getPassword()) {
-        user->sendMessage(":server 464 " + user->getNickname() + " :Password mismatch");
+        user->sendMessage(":server 464 " + user->getNickname() + " :Password incorrect");
         return;
     }
     else

@@ -10,16 +10,16 @@ SRCS = main.cpp \
        $(SRCS_DIR)/ACommand.cpp \
        $(SRCS_DIR)/Server.cpp \
        $(SRCS_DIR)/Client.cpp \
-       $(SRCS_DIR)/Channel.cpp # \
-       # $(SRCS_DIR)/Join.cpp \
-       # $(SRCS_DIR)/Nick.cpp \
-       # $(SRCS_DIR)/Pass.cpp \
-       # $(SRCS_DIR)/Privmsg.cpp \
-       # $(SRCS_DIR)/User.cpp \
-       # $(SRCS_DIR)/Mode.cpp \
-       # $(SRCS_DIR)/Invite.cpp \
-       # $(SRCS_DIR)/Kick.cpp \
-       # $(SRCS_DIR)/Topic.cpp
+       $(SRCS_DIR)/Channel.cpp \
+       $(SRCS_DIR)/Join.cpp \
+       $(SRCS_DIR)/Nick.cpp \
+       $(SRCS_DIR)/Pass.cpp \
+       $(SRCS_DIR)/Privmsg.cpp \
+       $(SRCS_DIR)/User.cpp \
+       $(SRCS_DIR)/Mode.cpp \
+       $(SRCS_DIR)/Invite.cpp \
+       $(SRCS_DIR)/Kick.cpp \
+       $(SRCS_DIR)/Topic.cpp
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(notdir $(SRCS:.cpp=.o)))
 

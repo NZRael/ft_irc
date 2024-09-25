@@ -35,7 +35,7 @@ void Kick::execute(Client *user, std::string raw_message, Server *server) const{
 		user->sendMessage(":server 482 " + user->getNickname() + " " + channelName + " :You are not channel operator");
 		return ;
 	}
-	Client *target = server->getClientbyNick(targetKick);
+	Client *target = server->getClientByNick(targetKick);
 	if (!target || !channel->hasUser(target))
 	{
 		user->sendMessage(":server 441 " + user->getNickname() + " " + targetKick + " " + channelName + " :They aren't on the channel ");

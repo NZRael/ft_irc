@@ -42,7 +42,7 @@ void Join::execute(Client *user, std::string raw_message, Server *server) const{
 
 	channel->addUser(user);
 	user->joinChannel(channel);
-	if (newChannel = true)
+	if (newChannel == true)
 		channel->addOperator(user);
 
 	std::string joinMessage = ":" + user->getNickname() + "!" + user->getUsername() + "@" + user->getHostname() + " JOIN " + channelName;
