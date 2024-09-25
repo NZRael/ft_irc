@@ -21,6 +21,10 @@ bool Nick::isValidNickname(const std::string& nick) const {
 }
 
 void Nick::execute(Client *user, std::string raw_message, Server *server) const{
+	if (user->isUserAuthenticated() == false) {
+		user->sendMessage(":server 451 * :Enter password first");
+		return;
+	}
 	if (raw_message.empty()) {
 		user->sendMessage(":server 431 * :Expected nickname and have none");
 		return;
