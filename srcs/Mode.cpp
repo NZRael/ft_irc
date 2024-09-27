@@ -25,7 +25,7 @@ void Mode::execute(Client *user, std::string raw_message, Server *server) const{
 
 	if(!channel->isOperator(user))
 	{
-		user->sendMessage(": server " + user->getNickname() + " " + channelMode + " :You're not channel operator\r\n");
+		user->sendMessage(":server " + user->getNickname() + " " + channelMode + " :You're not channel operator\r\n");
 		return ;
 	}
 

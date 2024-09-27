@@ -22,6 +22,7 @@ bool Channel::addUser(Client* user)
 	if (std::find(_users.begin(), _users.end(), user) == _users.end())
 	{
 		_users.push_back(user);
+		_operators[user] = false;
 		return (true);
 	}
 	return (false);
@@ -67,6 +68,7 @@ void Channel::broadcastMessage(const std::string& message, Client* sender)
 
 void Channel::setMode(char mode, bool set, Client* user, const std::string& parameter, Server* server)
 {
+	std::cout << mode << " " << set << " " << parameter << std::endl;
 	switch(mode)
 	{
 		case 'i':

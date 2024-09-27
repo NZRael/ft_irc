@@ -62,5 +62,4 @@ void Join::execute(Client *user, std::string raw_message, Server *server) const{
 	}
 	user->sendMessage(userList);
 	user->sendMessage(":server 366 " + user->getNickname() + " " + channelName + " :End of /NAMES list.\r\n");
-	
 }

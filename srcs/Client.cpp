@@ -44,5 +44,6 @@ bool Client::isInChannel(Channel* channel) const {
 
 // Message handling
 void Client::sendMessage(const std::string& message) const {
-    send(socket, message.c_str(), message.length(), 0);
+    std::string finalmessage = message + "\r\n";
+    send(socket, finalmessage.c_str(), finalmessage.length(), 0);
 }
