@@ -24,7 +24,7 @@ void Topic::execute(Client *user, std::string raw_message, Server *server) const
 
 	if (!channel->hasUser(user))
 	{
-		user->sendMessage(":server 442 " + user->getNickname() + " " + channelName + " : You're not on that channel\r\n");
+		user->sendMessage(":server 442 " + user->getNickname() + " " + channelName + " :You're not on that channel\r\n");
 	}
 	std::getline(iss, newTopic);
 	if (newTopic.empty()) {
