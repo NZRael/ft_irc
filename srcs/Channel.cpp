@@ -7,7 +7,11 @@ Channel::~Channel() {}
 const std::string& Channel::getName() const { return _name; }
 const std::string& Channel::getTopic() const { return _topic; }
 const std::vector<Client*>& Channel::getUsers() const { return _users; }
-bool Channel::isOperator(Client* user) const { return _operators.find(user) != _operators.end(); }
+bool Channel::isOperator(Client* user) const {
+	if (hasUser(user))
+		return _operators.at(user);
+	return false;
+}
 bool Channel::isInviteOnly() const { return _inviteOnly; }
 bool Channel::isTopicRestricted()const { return _topicRestricted; }
 unsigned int Channel::getUserLimit() const { return _userLimit; }
@@ -94,10 +98,10 @@ void Channel::setMode(char mode, bool set, Client* user, const std::string& para
 				if (targetUser && hasUser(targetUser)) {
 					if (set) {
 						addOperator(targetUser);
-						broadcastMessage(user->getNickname() + " gives channel operator status to " + targetUser->getNickname());
+						broadcastMessage(":server MODE " + _name + " +o " + targetUser->getNickname());
 					} else {
 						removeOperator(targetUser);
-						broadcastMessage(user->getNickname() + " removes channel operator status from " + targetUser->getNickname());
+						broadcastMessage(":server MODE " + _name + " -o " + targetUser->getNickname());
 					}
 				}
 			}

@@ -12,7 +12,7 @@ void Kick::execute(Client *user, std::string raw_message, Server *server) const{
 
 	if (!(iss >> channelName >> targetKick))
 	{
-		user->sendMessage(":server 461 " + user->getNickname() + " KICK : Not enough parameters\r\n");
+		user->sendMessage(":server 461 " + user->getNickname() + " KICK : Not enough parameters");
 		return ;
 	}
 
@@ -26,22 +26,22 @@ void Kick::execute(Client *user, std::string raw_message, Server *server) const{
 	Channel *channel = server->getChannelByName(channelName);
 	if (!channel)
 	{
-		user->sendMessage(":server 403 " + user->getNickname() + " " + channelName + " :No such a channel\r\n");
+		user->sendMessage(":server 403 " + user->getNickname() + " " + channelName + " :No such a channel");
 		return ;
 	}
 
 	if (!channel->isOperator(user))
 	{
-		user->sendMessage(":server 482 " + user->getNickname() + " " + channelName + " :You are not channel operator\r\n");
+		user->sendMessage(":server 482 " + user->getNickname() + " " + channelName + " :You are not channel operator");
 		return ;
 	}
 	Client *target = server->getClientByNick(targetKick);
 	if (!target || !channel->hasUser(target))
 	{
-		user->sendMessage(":server 441 " + user->getNickname() + " " + targetKick + " " + channelName + " :They aren't on the channel \r\n");
+		user->sendMessage(":server 441 " + user->getNickname() + " " + targetKick + " " + channelName + " :They aren't on the channel ");
 		return;
 	}
 
-	channel->broadcastMessage(":" + user->getNickname() + " KICK " + targetKick + " from : " + channelName + "\r\n");
+	channel->broadcastMessage(":server KICK " + channelName + " " + targetKick);
 	channel->removeUser(target);
 }

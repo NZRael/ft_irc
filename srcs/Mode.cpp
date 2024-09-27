@@ -15,7 +15,6 @@ void Mode::execute(Client *user, std::string raw_message, Server *server) const{
 		user->sendMessage(":server 461 " + user->getNickname() + " MODE :not enough parameters\r\n");
 		return;
 	}
-
 	Channel *channel = server->getChannelByName(channelMode);
 	if (!channel)
 	{

@@ -48,6 +48,7 @@ void User::execute(Client *user, std::string raw_message, Server *server) const{
         user->sendMessage(":server 002 " + user->getNickname() + " :Your host is server, running version 1.0\r\n");
         user->sendMessage(":server 003 " + user->getNickname() + " :This server was created September 25, 2024\r\n");
         user->sendMessage(":server 004 " + user->getNickname() + " server 1.0 * *\r\n");
+        user->setPrefix();
     }
 }
 

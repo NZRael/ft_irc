@@ -12,7 +12,7 @@ void Join::execute(Client *user, std::string raw_message, Server *server) const{
 	bool	newChannel = false;
 	
 	if (!(iss >> channelName)) {
-		user->sendMessage(":server 461 " + user->getNickname() + " JOIN :Not enough parameters\r\n");
+		user->sendMessage(":server 461 " + user->getNickname() + " JOIN :Not enough parameters");
 		return;
 	}
 
@@ -26,17 +26,17 @@ void Join::execute(Client *user, std::string raw_message, Server *server) const{
 	}
 
 	if (channel->isInviteOnly() && !channel->isInvited(user)) {
-		user->sendMessage(":server 473 " + user->getNickname() + " " + channelName + " :Cannot join channel (+i)\r\n");
+		user->sendMessage(":server 473 " + user->getNickname() + " " + channelName + " :Cannot join channel (+i)");
 		return;
 	}
 
 	if (!channel->checkPassword(key)) {
-		user->sendMessage(":server 475 " + user->getNickname() + " " + channelName + " :Cannot join channel (+k)\r\n");
+		user->sendMessage(":server 475 " + user->getNickname() + " " + channelName + " :Cannot join channel (+k)");
 		return;
 	}
 
 	if (channel->getUserLimit() > 0 && channel->getUsers().size() >= channel->getUserLimit()) {
-		user->sendMessage(":server 471 " + user->getNickname() + " " + channelName + " :Cannot join channel (+l)\r\n");
+		user->sendMessage(":server 471 " + user->getNickname() + " " + channelName + " :Cannot join channel (+l)");
 		return;
 	}
 
@@ -45,11 +45,11 @@ void Join::execute(Client *user, std::string raw_message, Server *server) const{
 	if (newChannel == true)
 		channel->addOperator(user);
 
-	std::string joinMessage = ":" + user->getNickname() + "!" + user->getUsername() + "@" + user->getHostname() + " JOIN " + channelName + "\r\n";
+	std::string joinMessage = user->getPrefix() + " JOIN " + channelName;
 	channel->broadcastMessage(joinMessage);
 
 	if (!channel->getTopic().empty()) {
-		user->sendMessage(":server 332 " + user->getNickname() + " " + channelName + " :" + channel->getTopic() + "\r\n");
+		user->sendMessage(":server 332 " + user->getNickname() + " " + channelName + " :" + channel->getTopic());
 	}
 
 	std::string userList = ":server 353 " + user->getNickname() + " = " + channelName + " :";
@@ -61,5 +61,5 @@ void Join::execute(Client *user, std::string raw_message, Server *server) const{
 		userList += (*it)->getNickname() + " ";
 	}
 	user->sendMessage(userList);
-	user->sendMessage(":server 366 " + user->getNickname() + " " + channelName + " :End of /NAMES list.\r\n");
+	user->sendMessage(":server 366 " + user->getNickname() + " " + channelName + " :End of /NAMES list.");
 }

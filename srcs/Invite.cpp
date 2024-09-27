@@ -11,38 +11,39 @@ void Invite::execute(Client* user, std::string raw_message, Server *server) cons
     std::string nickname, channelName;
     
     if (!(iss >> nickname >> channelName)) {
-        user->sendMessage(":server 461 " + user->getNickname() + " INVITE :Not enough parameters\r\n");
+        user->sendMessage(":server 461 " + user->getNickname() + " INVITE :Not enough parameters");
         return;
     }
 
     Channel* channel = server->getChannelByName(channelName);
     if (!channel) {
-        user->sendMessage(":server 403 " + user->getNickname() + " " + channelName + " :No such channel\r\n");
+        user->sendMessage(":server 403 " + user->getNickname() + " " + channelName + " :No such channel");
         return;
     }
 
     if (!channel->hasUser(user)) {
-        user->sendMessage(":server 442 " + user->getNickname() + " " + channelName + " :You're not on that channel\r\n");
+        user->sendMessage(":server 442 " + user->getNickname() + " " + channelName + " :You're not on that channel");
         return;
     }
 
     if (channel->isInviteOnly() && !channel->isOperator(user)) {
-        user->sendMessage(":server 482 " + user->getNickname() + " " + channelName + " :You're not channel operator\r\n");
+        user->sendMessage(":server 482 " + user->getNickname() + " " + channelName + " :You're not channel operator");
         return;
     }
 
     Client* target = server->getClientByNick(nickname);
     if (!target) {
-        user->sendMessage(":server 401 " + user->getNickname() + " " + nickname + " :No such nick/channel\r\n");
+        user->sendMessage(":server 401 " + user->getNickname() + " " + nickname + " :No such nick/channel");
         return;
     }
 
     if (channel->hasUser(target)) {
-        user->sendMessage(":server 443 " + user->getNickname() + " " + nickname + " " + channelName + " :is already on channel\r\n");
+        user->sendMessage(":server 443 " + user->getNickname() + " " + nickname + " " + channelName + " :is already on channel");
         return;
     }
 
     channel->addUser(target);
-    target->sendMessage(":" + user->getNickname() + "!" + user->getUsername() + "@" + user->getHostname() + " INVITE " + nickname + " :" + channelName);
-    user->sendMessage(":server 341 " + user->getNickname() + " " + nickname + " " + channelName + "\r\n");
+    channel->inviteUser(target);
+    target->sendMessage(":" + user->getNickname() + " INVITE " + nickname + " :" + channelName);
+    user->sendMessage(":server 341 " + user->getNickname() + " " + nickname + " " + channelName);
 }
