@@ -20,7 +20,7 @@ void Kick::execute(Client *user, std::string raw_message, Server *server) const{
 	if (reason.empty()) {
         reason = user->getNickname();
     } else {
-        reason = reason.substr(1); // Remove leading space
+        reason = reason.substr(1);
     }
 
 	Channel *channel = server->getChannelByName(channelName);
@@ -38,10 +38,14 @@ void Kick::execute(Client *user, std::string raw_message, Server *server) const{
 	Client *target = server->getClientByNick(targetKick);
 	if (!target || !channel->hasUser(target))
 	{
-		user->sendMessage(":server 441 " + user->getNickname() + " " + targetKick + " " + channelName + " :They aren't on the channel ");
+		user->sendMessage(":server 441 " + user->getNickname() + " " + targetKick + " " + channelName + " :They aren't on the channel");
 		return;
 	}
-
+	if (target->getNickname() == user->getNickname())
+	{
+		user->sendMessage(":server " + user->getNickname() + " :You can't kick yourself");
+		return ;
+	}
 	channel->broadcastMessage(":server KICK " + channelName + " " + targetKick);
 	channel->removeUser(target);
 }
