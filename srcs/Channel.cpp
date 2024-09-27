@@ -6,6 +6,8 @@ Channel::~Channel() {}
 
 const std::string& Channel::getName() const { return _name; }
 const std::string& Channel::getTopic() const { return _topic; }
+const std::string& Channel::getTopicSetter() const { return _topicSetter; }
+time_t	Channel::getTopicTimestamp() const { return _topicTimestamp; }
 const std::vector<Client*>& Channel::getUsers() const { return _users; }
 bool Channel::isOperator(Client* user) const {
 	if (hasUser(user))
@@ -15,8 +17,9 @@ bool Channel::isOperator(Client* user) const {
 bool Channel::isInviteOnly() const { return _inviteOnly; }
 bool Channel::isTopicRestricted()const { return _topicRestricted; }
 unsigned int Channel::getUserLimit() const { return _userLimit; }
-
 void Channel::setTopic(const std::string& newTopic) { _topic = newTopic; }
+void Channel::setTopicSetter(const std::string& setter) { _topicSetter = setter; }
+void Channel::setTopicTimestamp(time_t timestamp) { _topicTimestamp = timestamp; }
 void Channel::setPassword(const std::string& newPassword) { _password = newPassword; }
 void Channel::setInviteOnly(bool invite) { _inviteOnly = invite; }
 void Channel::setUserLimit(unsigned int limit) { _userLimit = limit; }
@@ -72,7 +75,7 @@ void Channel::broadcastMessage(const std::string& message, Client* sender)
 
 void Channel::setMode(char mode, bool set, Client* user, const std::string& parameter, Server* server)
 {
-	std::cout << mode << " " << set << " " << parameter << std::endl;
+	//std::cout << mode << " " << set << " " << parameter << std::endl;
 	switch(mode)
 	{
 		case 'i':

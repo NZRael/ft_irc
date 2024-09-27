@@ -50,6 +50,10 @@ void Join::execute(Client *user, std::string raw_message, Server *server) const{
 
 	if (!channel->getTopic().empty()) {
 		user->sendMessage(":server 332 " + user->getNickname() + " " + channelName + " :" + channel->getTopic());
+		char *rawTime = ctime(&(channel->getTopicTimestamp()));
+		std::string timeString(rawTime ? rawTime : "");
+		user->sendMessage(":server 333 " + user->getNickname() + " " + channelName + " " + channel->getTopicSetter() + " " + timeString);
+
 	}
 
 	std::string userList = ":server 353 " + user->getNickname() + " = " + channelName + " :";

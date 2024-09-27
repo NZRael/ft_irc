@@ -6,6 +6,8 @@ class Channel {
 private : 
     std::string _name;
     std::string _topic;
+    std::string _topicSetter;
+    time_t _topicTimestamp;
     std::vector<Client*> _users;
     std::map<Client*, bool> _operators;
     std::string _password;
@@ -21,6 +23,8 @@ public :
     // Getters
     const std::string& getName() const;
     const std::string& getTopic() const;
+    const std::string& getTopicSetter() const;
+    time_t getTopicTimestamp() const;
     const std::vector<Client*>& getUsers() const;
     bool isOperator(Client* user) const;
     bool isInviteOnly() const;
@@ -29,6 +33,8 @@ public :
 
     // Setters
     void setTopic(const std::string& newTopic);
+    void setTopicSetter(const std::string& setter);
+    void setTopicTimestamp(time_t timestamp);
     void setPassword(const std::string& newPassword);
     void setInviteOnly(bool inviteOnly);
     void setUserLimit(unsigned int limit);

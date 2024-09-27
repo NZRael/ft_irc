@@ -40,8 +40,11 @@ void Topic::execute(Client *user, std::string raw_message, Server *server) const
             user->sendMessage(":server 482 " + user->getNickname() + " " + channelName + " :You're not channel operator\r\n");
             return;
         }
-        
-        newTopic = newTopic.substr(1); // Remove leading space
+        newTopic.erase(0, newTopic.find_first_not_of(" "));
+        newTopic = newTopic.substr(1);
+		channel->setTopicSetter(user->getNickname());
+		//mettre le timestamp exact du moment ou le topic a été set
+		channel->setTopicTimestamp(time(0));
         channel->setTopic(newTopic);
         channel->broadcastMessage(":" + user->getNickname() + " TOPIC " + channelName + " :" + newTopic + "\r\n");
     }
