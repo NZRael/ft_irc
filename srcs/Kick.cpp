@@ -20,6 +20,7 @@ void Kick::execute(Client *user, std::string raw_message, Server *server) const{
 	if (reason.empty()) {
         reason = user->getNickname();
     } else {
+		reason.erase(0, reason.find_first_not_of(" "));
         reason = reason.substr(1);
     }
 
@@ -30,15 +31,21 @@ void Kick::execute(Client *user, std::string raw_message, Server *server) const{
 		return ;
 	}
 
+	if (!channel->hasUser(user))
+	{
+		user->sendMessage(":server 442 " + user->getNickname() + " " + channelName + " :You're not on that channel");
+		return ;
+	}
+
 	if (!channel->isOperator(user))
 	{
-		user->sendMessage(":server 482 " + user->getNickname() + " " + channelName + " :You are not channel operator");
+		user->sendMessage(":server 482 " + user->getNickname() + " " + channelName + " :You're not a channel operator");
 		return ;
 	}
 	Client *target = server->getClientByNick(targetKick);
 	if (!target || !channel->hasUser(target))
 	{
-		user->sendMessage(":server 441 " + user->getNickname() + " " + targetKick + " " + channelName + " :They aren't on the channel");
+		user->sendMessage(":server 441 " + user->getNickname() + " " + target->getNickname() + " " + channelName + " :They aren't on that channel");
 		return;
 	}
 	if (target->getNickname() == user->getNickname())
@@ -46,6 +53,6 @@ void Kick::execute(Client *user, std::string raw_message, Server *server) const{
 		user->sendMessage(":server " + user->getNickname() + " :You can't kick yourself");
 		return ;
 	}
-	channel->broadcastMessage(":server KICK " + channelName + " " + targetKick);
+	channel->broadcastMessage(user->getPrefix() + " KICK " + channelName + " " + targetKick);
 	channel->removeUser(target);
 }
