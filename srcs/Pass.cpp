@@ -6,7 +6,7 @@ Pass::~Pass() {}
 
 void Pass::execute(Client *user, std::string raw_message, Server *server) const {
     if (user->isUserAuthenticated()) {
-        user->sendMessage(":server 462 " + user->getNickname() + " PASS :You are already register\r\n");
+        user->sendMessage(":server 462 " + user->getNickname() + " PASS :You may not reregister\r\n");
         return;
     }
     if (raw_message.empty()) {
