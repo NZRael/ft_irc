@@ -32,8 +32,24 @@ void Mode::execute(Client *user, std::string raw_message, Server *server) const{
 
 	if (!(iss >> modeString))
 	{
-		std::string activeMods 
-		user->sendMessage(":server 324 " + user->getNickname() + " " + channel->getName() + activeMods);
+		std::string activeModes = "+";
+		if (channel->isInviteOnly()) 
+			activeModes += "i";
+		activeModes += "n";
+		if (channel->isTopicRestricted())
+			activeModes +="t";
+        if (channel->getUserLimit() > 0) 
+			activeModes += "l";
+		if (!channel->checkPassword("")) 
+			activeModes += "k";
+		if (channel->getUserLimit() > 0) 
+			activeModes += " " + intToString(channel->getUserLimit());
+		if (!channel->checkPassword("")) 
+			activeModes += " " + channel->getPassword();
+
+
+		user->sendMessage(":server 324 " + user->getNickname() + " " + channel->getName() + " " + activeModes);
+
 		std::ostringstream oss;
 		oss << channel->getCreationTime();
 		std::string message = ":server 329 " + user->getNickname() + " " + channel->getName() + " " + oss.str();

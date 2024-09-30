@@ -8,6 +8,7 @@ const std::string& Channel::getName() const { return _name; }
 const std::string& Channel::getTopic() const { return _topic; }
 const std::string& Channel::getTopicSetter() const { return _topicSetter; }
 time_t	Channel::getTopicTimestamp() const { return _topicTimestamp; }
+std::string Channel::getPassword() const { return _password; }
 std::time_t Channel::getCreationTime() const { return creationTime; }
 const std::vector<Client*>& Channel::getUsers() const { return _users; }
 unsigned int Channel::getUserLimit() const { return _userLimit; }
