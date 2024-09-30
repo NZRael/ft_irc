@@ -26,6 +26,7 @@ public :
     const std::string& getTopic() const;
     const std::string& getTopicSetter() const;
     time_t getTopicTimestamp() const;
+    std::string getPassword() const;
     std::time_t getCreationTime() const;
     const std::vector<Client*>& getUsers() const;
     bool isOperator(Client* user) const;

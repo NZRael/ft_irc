@@ -8,6 +8,7 @@ const std::string& Channel::getName() const { return _name; }
 const std::string& Channel::getTopic() const { return _topic; }
 const std::string& Channel::getTopicSetter() const { return _topicSetter; }
 time_t	Channel::getTopicTimestamp() const { return _topicTimestamp; }
+std::string Channel::getPassword() const { return _password; }
 std::time_t Channel::getCreationTime() const { return creationTime; }
 const std::vector<Client*>& Channel::getUsers() const { return _users; }
 unsigned int Channel::getUserLimit() const { return _userLimit; }
@@ -80,19 +81,19 @@ void Channel::setMode(char mode, bool set, Client* user, const std::string& para
 	{
 		case 'i':
 			_inviteOnly = set;
-			broadcastMessage(user->getNickname() + " set channel " + _name + " " + (set ? "+i" : "-i"));
+			broadcastMessage(user->getPrefix() + " MODE " + _name + " " + (set ? "+i" : "-i"));
 			break;
 		case 't':
 			_topicRestricted = set;
-			broadcastMessage(user->getNickname() + " set channel " + _name + " " + (set ? "+t" : "-t"));
+			broadcastMessage(user->getPrefix() + " MODE " + _name + " " + (set ? "+t" : "-t"));
 			break;
 		case 'k':
 			if (set && !parameter.empty()) {
 				_password = parameter;
-				broadcastMessage(user->getNickname() + " set channel " + _name + " +k");
+				broadcastMessage(user->getPrefix() + " MODE " + _name + " +k " + _password);
 			} else if (!set) {
 				_password.clear();
-				broadcastMessage(user->getNickname() + " set channel " + _name + " -k");
+				broadcastMessage(user->getPrefix() + " MODE " + _name + " -k");
 			}
 			break;
 		case 'o':
@@ -101,10 +102,10 @@ void Channel::setMode(char mode, bool set, Client* user, const std::string& para
 				if (targetUser && hasUser(targetUser)) {
 					if (set) {
 						addOperator(targetUser);
-						broadcastMessage(":server MODE " + _name + " +o " + targetUser->getNickname());
+						broadcastMessage(user->getPrefix() + " MODE " + _name + " +o " + targetUser->getNickname());
 					} else {
 						removeOperator(targetUser);
-						broadcastMessage(":server MODE " + _name + " -o " + targetUser->getNickname());
+						broadcastMessage(user->getPrefix() + " MODE " + _name + " -o " + targetUser->getNickname());
 					}
 				}
 			}
@@ -121,7 +122,7 @@ void Channel::setMode(char mode, bool set, Client* user, const std::string& para
 					}
 					else {
 						_userLimit = newLimit;
-						broadcastMessage(user->getNickname() + " set channel " + _name + " user limit to " + parameter);
+						broadcastMessage(user->getPrefix() + " MODE " + _name + "+l " + parameter);
 					}
 				} 
 				catch (const std::invalid_argument& e)
