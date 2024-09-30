@@ -30,18 +30,22 @@ void Mode::execute(Client *user, std::string raw_message, Server *server) const{
 		return;
 	}
 
+	if (!(iss >> modeString))
+	{
+		std::string activeMods 
+		user->sendMessage(":server 324 " + user->getNickname() + " " + channel->getName() + activeMods);
+		std::ostringstream oss;
+		oss << channel->getCreationTime();
+		std::string message = ":server 329 " + user->getNickname() + " " + channel->getName() + " " + oss.str();
+		user->sendMessage(message);
+		//user->sendMessage(":server 461 " + user->getNickname() + " MODE :not enough parameters\r\n");
+		return;
+	}
+
 	if(!channel->isOperator(user))
 	{
 		user->sendMessage(":server " + user->getNickname() + " " + channelMode + " :You're not channel operator\r\n");
 		return ;
-	}
-
-	if ()
-
-	if (!(iss >> modeString))
-	{
-		user->sendMessage(":server 461 " + user->getNickname() + " MODE :not enough parameters\r\n");
-		return;
 	}
 	bool adding = true;
     for (std::string::const_iterator it = modeString.begin(); it != modeString.end(); ++it) {
