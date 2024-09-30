@@ -17,7 +17,6 @@
 #include <stdexcept>
 #include <cstdlib>
 #include <cstdio>
-#include <fcntl.h>
 #include <set>
 
 // Déclarations anticipées

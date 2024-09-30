@@ -214,19 +214,7 @@ Client * Server::getClientByNick(const std::string& clientName)
 }
 
 void Server::addChannel(Channel* channel) {
-    if (channel == NULL) {
-        // canal invalide
-        // a voir quoi faire
-        return;
-    }
-
-    // Vérifier si un canal avec le même nom existe déjà
-    if (getChannelByName(channel->getName()) != NULL) {
-        // le canal existe déjà
-        // a voir quoi faire
-        return;
-    }
-    channels.push_back(channel); // ajout
+    channels.push_back(channel);
 }
 
 bool Server::isNicknameUsed(const std::string& nick) {

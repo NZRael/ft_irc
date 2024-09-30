@@ -36,13 +36,14 @@ void Mode::execute(Client *user, std::string raw_message, Server *server) const{
 		return ;
 	}
 
-	if ()
+	// if ()
 
 	if (!(iss >> modeString))
 	{
 		user->sendMessage(":server 461 " + user->getNickname() + " MODE :not enough parameters\r\n");
 		return;
 	}
+
 	bool adding = true;
     for (std::string::const_iterator it = modeString.begin(); it != modeString.end(); ++it) {
         char mode = *it;

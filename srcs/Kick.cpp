@@ -43,7 +43,12 @@ void Kick::execute(Client *user, std::string raw_message, Server *server) const{
 		return ;
 	}
 	Client *target = server->getClientByNick(targetKick);
-	if (!target || !channel->hasUser(target))
+	if (!target)
+	{
+		user->sendMessage(":server 401 " + user->getNickname() + " " + targetKick + " :No such nick/channel");
+		return ;
+	}
+	if (!channel->hasUser(target))
 	{
 		user->sendMessage(":server 441 " + user->getNickname() + " " + target->getNickname() + " " + channelName + " :They aren't on that channel");
 		return;
