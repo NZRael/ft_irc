@@ -42,7 +42,6 @@ void Join::execute(Client *user, std::string raw_message, Server *server) const{
 	}
 
 	channel->addUser(user);
-	//
 	user->joinChannel(channel);
 	if (newChannel == true)
 		channel->addOperator(user);

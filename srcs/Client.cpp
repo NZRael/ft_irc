@@ -15,6 +15,7 @@ const std::string& Client::getRealname() const { return realname; }
 const std::string& Client::getPrefix() const { return prefix; }
 bool Client::isUserAuthenticated() const { return isAuthenticated; }
 const std::vector<Channel*>& Client::getChannels() const { return channels; }
+std::string Client::getHistory() const { return history; }
 
 // Setters
 void Client::setSocket(int sock) { socket = sock; }
@@ -26,6 +27,7 @@ void Client::setPrefix(void) {
     prefix = ":" + nickname + "!" + username + "@localhost";
 }
 void Client::setAuthenticated(bool auth) { isAuthenticated = auth; }
+void Client::setHistory(const std::string& message) { history = message; }
 
 // Channel management
 void Client::joinChannel(Channel* channel) {

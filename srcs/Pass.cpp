@@ -20,6 +20,12 @@ void Pass::execute(Client *user, std::string raw_message, Server *server) const 
         user->sendMessage(":server 464 " + user->getNickname() + " PASS :Password incorrect\r\n");
         return;
     }
-    else
+    else{
+        std::string reste;
+        if (iss >> reste){
+            user->sendMessage(":server 461 " + user->getNickname() + " PASS :Not enough parameters\r\n");
+            return;
+        }
         user->setAuthenticated(true);
+    }
 }

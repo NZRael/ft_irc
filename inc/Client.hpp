@@ -12,6 +12,7 @@ private:
     std::string prefix;
     bool        isAuthenticated;
     std::vector<Channel*> channels;
+    std::string history;
 
 public:
     Client(int clientSocket);
@@ -26,6 +27,7 @@ public:
     const std::string& getPrefix() const;
     bool isUserAuthenticated() const;
     const std::vector<Channel*>& getChannels() const;
+    std::string getHistory() const;
 
     // Setters
     void setSocket(int sock);
@@ -35,6 +37,7 @@ public:
     void setRealname(const std::string& real);
     void setPrefix(void);
     void setAuthenticated(bool auth);
+    void setHistory(const std::string& message);
 
     // Channel management
     void joinChannel(Channel* channel);
