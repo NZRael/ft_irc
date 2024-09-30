@@ -151,8 +151,8 @@ void Server::parseMessage(int index_user, const std::string& raw_message) {
         c_commandes.push_back(ligne);
     }
     for (size_t i = 0; i < c_commandes.size(); i++) {
-        if (c_commandes[i].find("CAP LS") != std::string::npos) {
-            users[index_user]->sendMessage("CAP * LS\r\n");
+        if (c_commandes[i].find("CAP") != std::string::npos) {
+            users[index_user]->sendMessage("CAP * LS");
             continue ;
         }
         std::istringstream iss(c_commandes[i]);
