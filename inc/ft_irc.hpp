@@ -19,6 +19,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <set>
+#include <ctime>
 
 // Déclarations anticipées
 class Server;

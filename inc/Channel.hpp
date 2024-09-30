@@ -8,6 +8,7 @@ private :
     std::string _topic;
     std::string _topicSetter;
     time_t _topicTimestamp;
+    std::time_t creationTime;
     std::vector<Client*> _users;
     std::map<Client*, bool> _operators;
     std::string _password;
@@ -25,6 +26,7 @@ public :
     const std::string& getTopic() const;
     const std::string& getTopicSetter() const;
     time_t getTopicTimestamp() const;
+    std::time_t getCreationTime() const;
     const std::vector<Client*>& getUsers() const;
     bool isOperator(Client* user) const;
     bool isInviteOnly() const;

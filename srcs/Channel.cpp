@@ -1,6 +1,6 @@
 #include "../inc/Channel.hpp"
 
-Channel::Channel(const std::string& channelName) : _name(channelName), _inviteOnly(false), _topicRestricted(false), _userLimit(0) {}
+Channel::Channel(const std::string& channelName) : _name(channelName), creationTime(std::time(0)), _inviteOnly(false), _topicRestricted(false), _userLimit(0) {}
 
 Channel::~Channel() {}
 
@@ -8,7 +8,9 @@ const std::string& Channel::getName() const { return _name; }
 const std::string& Channel::getTopic() const { return _topic; }
 const std::string& Channel::getTopicSetter() const { return _topicSetter; }
 time_t	Channel::getTopicTimestamp() const { return _topicTimestamp; }
+std::time_t Channel::getCreationTime() const { return creationTime; }
 const std::vector<Client*>& Channel::getUsers() const { return _users; }
+unsigned int Channel::getUserLimit() const { return _userLimit; }
 bool Channel::isOperator(Client* user) const {
 	if (hasUser(user))
 		return _operators.at(user);
@@ -16,7 +18,6 @@ bool Channel::isOperator(Client* user) const {
 }
 bool Channel::isInviteOnly() const { return _inviteOnly; }
 bool Channel::isTopicRestricted()const { return _topicRestricted; }
-unsigned int Channel::getUserLimit() const { return _userLimit; }
 void Channel::setTopic(const std::string& newTopic) { _topic = newTopic; }
 void Channel::setTopicSetter(const std::string& setter) { _topicSetter = setter; }
 void Channel::setTopicTimestamp(time_t timestamp) { _topicTimestamp = timestamp; }
@@ -75,7 +76,6 @@ void Channel::broadcastMessage(const std::string& message, Client* sender)
 
 void Channel::setMode(char mode, bool set, Client* user, const std::string& parameter, Server* server)
 {
-	//std::cout << mode << " " << set << " " << parameter << std::endl;
 	switch(mode)
 	{
 		case 'i':
