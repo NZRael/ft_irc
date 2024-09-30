@@ -20,6 +20,7 @@ void Join::execute(Client *user, std::string raw_message, Server *server) const{
 
 	Channel* channel = server->getChannelByName(channelName);
 	if (!channel) {
+		std::transform(channelName.begin(), channelName.end(), channelName.begin(), ::tolower);
 		channel = new Channel(channelName);
 		server->addChannel(channel);
 		newChannel = true;
@@ -41,6 +42,7 @@ void Join::execute(Client *user, std::string raw_message, Server *server) const{
 	}
 
 	channel->addUser(user);
+	//
 	user->joinChannel(channel);
 	if (newChannel == true)
 		channel->addOperator(user);

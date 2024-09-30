@@ -11,6 +11,7 @@
 #include <sstream>
 #include <algorithm>
 #include <cstring>
+#include <cctype>
 #include <unistd.h>
 #include <fcntl.h>
 #include <arpa/inet.h>
