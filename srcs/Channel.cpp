@@ -122,7 +122,7 @@ void Channel::setMode(char mode, bool set, Client* user, const std::string& para
 					}
 					else {
 						_userLimit = newLimit;
-						broadcastMessage(user->getPrefix() + " MODE " + _name + "+l " + parameter);
+						broadcastMessage(user->getPrefix() + " MODE " + _name + " +l " + parameter);
 					}
 				} 
 				catch (const std::invalid_argument& e)

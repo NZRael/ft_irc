@@ -19,8 +19,12 @@ void Join::execute(Client *user, std::string raw_message, Server *server) const{
 	iss >> key; // Key is optional
 
 	Channel* channel = server->getChannelByName(channelName);
+	std::cout << "channel " << channelName << "|" <<std::endl;
 	if (!channel) {
 		std::transform(channelName.begin(), channelName.end(), channelName.begin(), ::tolower);
+	}
+	channel = server->getChannelByName(channelName);
+	if (!channel) {
 		channel = new Channel(channelName);
 		server->addChannel(channel);
 		newChannel = true;
