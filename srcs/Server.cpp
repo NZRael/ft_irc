@@ -173,6 +173,7 @@ void Server::parseMessage(int index_user, std::string raw_message) {
             if (mess == this->command[i]->getName()) {
                 std::string reste;
                 std::getline(iss, reste);
+                std::cout << "Reste : " << reste << std::endl;
                 reste.erase(0, reste.find_first_not_of(" "));
                 reste.erase(reste.find_last_not_of("\r") + 1);
                 this->command[i]->execute(users[index_user], reste, this);
