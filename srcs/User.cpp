@@ -12,7 +12,7 @@ void User::execute(Client *user, std::string raw_message, Server *server) const{
     std::string username, hostname, servername, realname;
     
     if (!(iss >> username >> hostname >> servername)) {
-        user->sendMessage(":server 461 " + user->getNickname() + " USER :Not enough parameters\r\n");
+        user->sendMessage(":server 461 " + user->getNickname() + " USER :Not enough parameters");
         return;
     }
 
@@ -20,22 +20,22 @@ void User::execute(Client *user, std::string raw_message, Server *server) const{
     realname.erase(0, realname.find_first_not_of(" "));
     if (realname.empty() || realname[0] != ':') {
         std::cout << "realname: " << realname << std::endl;
-        user->sendMessage(":server 461 " + user->getNickname() + " USER :Not enough parameters\r\n");
+        user->sendMessage(":server 461 " + user->getNickname() + " USER :Not enough parameters");
         return;
     }
     realname = realname.substr(1);
 	if (realname.find(' ') == std::string::npos) {
-		user->sendMessage(":server 461 " + user->getNickname() + " USER :Not enough parameters\r\n");
+		user->sendMessage(":server 461 " + user->getNickname() + " USER :Not enough parameters");
 		return;
 	}
 
     if (!user->isUserAuthenticated()) {
-        user->sendMessage(":server 462 " + user->getNickname() + " USER :Unauthorized command (already registered)\r\n");
+        user->sendMessage(":server 462 " + user->getNickname() + " USER :Unauthorized command (already registered)");
         return;
     }
 
     if (!isValidUsername(username)) {
-        user->sendMessage("Invalid username\r\n");
+        user->sendMessage("Invalid username");
         return;
     }
 
@@ -44,10 +44,12 @@ void User::execute(Client *user, std::string raw_message, Server *server) const{
 
     if (!user->getNickname().empty()) {
         user->setAuthenticated(true);
-        user->sendMessage(":server 001 " + user->getNickname() + " :Welcome to the Internet Relay Network " + user->getPrefix() + "\r\n");
-        user->sendMessage(":server 002 " + user->getNickname() + " :Your host is server, running version 1.0\r\n");
-        user->sendMessage(":server 003 " + user->getNickname() + " :This server was created testSeptembertest25, 2024\r\n");
-        user->sendMessage(":server 004 " + user->getNickname() + " server 1.0 * *\r\n");
+        user->sendMessage(":server 001 " + user->getNickname() + " :Welcome to the Internet Relay Network " + user->getPrefix());
+        user->sendMessage(":server 002 " + user->getNickname() + " :Your host is server, running version 1.0");
+        time_t rawtime = time(0);
+        std::string time = ctime(&rawtime);
+        user->sendMessage(":server 003 " + user->getNickname() + " :This server was created " + time);
+        user->sendMessage(":server 004 " + user->getNickname() + " server 1.0 * *");
         user->setPrefix();
     }
 }

@@ -22,28 +22,28 @@ bool Nick::isValidNickname(const std::string& nick) const {
 
 void Nick::execute(Client *user, std::string raw_message, Server *server) const{
 	if (user->isUserAuthenticated() == false) {
-		user->sendMessage("Enter password first\r\n");
+		user->sendMessage("Enter password first");
 		return;
 	}
 	if (raw_message.empty()) {
-		user->sendMessage(":server 431 * :No nickname given\r\n");
+		user->sendMessage(":server 431 * :No nickname given");
 		return;
 	}
 	if (!isValidNickname(raw_message)) {
-        user->sendMessage(":server 432 * " + raw_message + " :Erroneous nickname\r\n");
+        user->sendMessage(":server 432 * " + raw_message + " :Erroneous nickname");
         return;
     }
 	if (server->isNicknameUsed(raw_message)) {
-        user->sendMessage(":server 433 * " + raw_message + " :Nickname is already in use\r\n");
+        user->sendMessage(":server 433 * " + raw_message + " :Nickname is already in use");
         return;
     }
 	if (user->getNickname().empty()) {
 		user->setNickname(raw_message);
-		user->sendMessage(":" + user->getNickname() + " NICK " + user->getNickname() + "\r\n");
+		user->sendMessage(":" + user->getNickname() + " NICK " + user->getNickname());
 	}
 	else {
 		std::string oldNick = user->getNickname();
 		user->setNickname(raw_message);
-		user->sendMessage(":" + oldNick + " NICK " + user->getNickname() + "\r\n");
+		user->sendMessage(":" + oldNick + " NICK " + user->getNickname());
 	}
 }

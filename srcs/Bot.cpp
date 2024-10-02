@@ -7,10 +7,6 @@ Bot::~Bot() {}
 void Bot::start(Client *user) const {
 
     user->sendMessage("Bonjour");
-} 
-
-void Bot::nbr_game(Client *user){
-    start(user);
 }
 
 
