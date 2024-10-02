@@ -122,7 +122,12 @@ void Server::handleClientMessage(std::vector<pollfd>& fds, size_t index) {
     } else {
         buffer[bytesRead] = '\0';
         std::cout << "Reçu de l'utilisateur n°" << users[index_user]->getSocket() << " : " << buffer << std::endl;
-        parseMessage(index_user, buffer);
+        //find le '\n' a la fin du buffer pour savoir si on a recu un message complet ou si on doit attendre le reste
+        if (buffer[bytesRead - 1] != '\n') {
+            users[index_user]->setHistory(users[index_user]->getHistory() + buffer); }
+        else {
+            parseMessage(index_user, buffer);
+        }
     }
 }
 
@@ -140,9 +145,15 @@ void Server::initCommand() {
     command.push_back(new Ping());
 }
 
-void Server::parseMessage(int index_user, const std::string& raw_message) {
+void Server::parseMessage(int index_user, std::string raw_message) {
     if (this->command.empty()) {
         initCommand();
+    }
+    if (users[index_user]->getHistory() != "") {
+        std::string tmp = users[index_user]->getHistory();
+        users[index_user]->setHistory("");
+        tmp += raw_message;
+        raw_message = tmp;
     }
     std::vector<std::string> c_commandes;
     std::string ligne;

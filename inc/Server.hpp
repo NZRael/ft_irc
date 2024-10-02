@@ -23,7 +23,7 @@ private:
 	void setupSocket();
 	void handleNewConnection(std::vector<pollfd>& fds);
 	void handleClientMessage(std::vector<pollfd>& fds, size_t index);
-	void parseMessage(int index_user, const std::string& raw_message);
+	void parseMessage(int index_user, std::string raw_message);
 
 	int port;
 	std::string password;
