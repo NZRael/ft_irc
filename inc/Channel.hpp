@@ -61,5 +61,7 @@ public :
     // Mode management
     void setMode(char mode, bool set, Client* user, const std::string& parameter, Server* server);
     bool checkPassword(const std::string& attemptedPassword) const;
+
+    bool isDigitsOnly(const std::string& str) const;
     
 };
