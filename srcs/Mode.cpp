@@ -10,6 +10,8 @@ void Mode::execute(Client *user, std::string raw_message, Server *server) const{
 	std::istringstream iss(raw_message);
 	std::string channelMode, modeString, modeParam;
 
+	if (raw_message == user->getNickname() + " +i")
+		return ;
 	iss >> channelMode;
 	if (channelMode.empty())
 	{
