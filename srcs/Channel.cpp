@@ -77,6 +77,7 @@ void Channel::broadcastMessage(const std::string& message, Client* sender)
 
 void Channel::setMode(char mode, bool set, Client* user, const std::string& parameter, Server* server)
 {
+	std::cout << "mode :|" << mode << "| set :|" << set << "| parameter:|" <<  parameter << "|" << std::endl;
 	switch(mode)
 	{
 		case 'i':
@@ -113,39 +114,44 @@ void Channel::setMode(char mode, bool set, Client* user, const std::string& para
 		case 'l':
 			if (set && !parameter.empty()) 
 			{
-				try 
-				{
-					int newLimit = std::atoi(parameter.c_str());
-					if (newLimit < 0) {
-						// 501 : ERR_UMODEUNKNOWNFLAG (Mode inconnu)
-            			user->sendMessage(":server 501 " + user->getNickname() + " :Cannot set negative user limit");
-					}
-					else {
-						_userLimit = newLimit;
-						broadcastMessage(user->getPrefix() + " MODE " + _name + " +l " + parameter);
-					}
-				} 
-				catch (const std::invalid_argument& e)
-				{
-					// 461 : ERR_NEEDMOREPARAMS (Paramètres invalides)
-        			user->sendMessage(":server 461 " + user->getNickname() + " MODE :Invalid user limit");
-				} 
-				catch (const std::out_of_range& e)
-				{
-					// 472 : ERR_UNKNOWNMODE (Mode inconnu, utilisé ici pour une valeur hors limites)
-					user->sendMessage(":server 472 " + user->getNickname() + " :Client limit out of range");
+				long int newLimit = std::atoi(parameter.c_str());
+				if (newLimit < 0) {
+					// 501 : ERR_UMODEUNKNOWNFLAG (Mode inconnu)
+            		user->sendMessage(":server 501 " + user->getNickname() + " :Cannot set negative user limit");
+					break ;
 				}
+				if (!isDigitsOnly(parameter))
+				{
+					user->sendMessage(":server 461 " + user->getNickname() + " MODE :Invalid user limit");
+					// 461 : ERR_NEEDMOREPARAMS (Paramètres invalides)
+					break;
+				}
+
+				if (parameter.size() > 8)
+				{
+					user->sendMessage(":server 472 " + user->getNickname() + " :Client limit out of range");
+					// 472 : ERR_UNKNOWNMODE (Mode inconnu, utilisé ici pour une valeur hors limites)
+					break;
+				}
+				std::cout << "LIMITE = |" << newLimit << "|" << std::endl;
+				_userLimit = newLimit;
+				broadcastMessage(user->getPrefix() + " MODE " + _name + " +l " + parameter);
 			} 
 			else if (set) 
 			{
 				// Handle empty parameter
 				user->sendMessage(":server 461 " + user->getNickname() + " MODE :No user limit specified");
 			}
-			 else 
+			else if (!set && parameter.empty() && _userLimit != 0)
 			{
-    			// 324 : RPL_CHANNELMODEIS (Réponse pour afficher le mode actuel)
-    			user->sendMessage(":server 324 " + user->getNickname() + " " + _name + " +l " + intToString(_userLimit));
+				_userLimit = 0;
+				broadcastMessage(user->getPrefix() + " MODE " + _name + " -l ");
 			}
+			//  else 
+			// {
+    		// 	// 324 : RPL_CHANNELMODEIS (Réponse pour afficher le mode actuel)
+    		// 	user->sendMessage(":server 324 " + user->getNickname() + " " + _name + " +l " + intToString(_userLimit));
+			// }
 			break;
 	}
 }
@@ -164,4 +170,14 @@ void Channel::inviteUser(Client* client) {
 
 void Channel::removeInvite(Client* client) {
     _invitedUsers.erase(client);
+}
+
+bool Channel::isDigitsOnly(const std::string& str) const{
+    // Vérifiez chaque caractère de la chaîne
+    for (size_t i = 0; i < str.length(); ++i) {
+        if (!isdigit(str[i])) {
+            return false;
+        }
+    }
+    return true;
 }
