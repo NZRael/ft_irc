@@ -130,7 +130,7 @@ void Channel::setMode(char mode, bool set, Client* user, const std::string& para
 					user->sendMessage(":server 472 " + user->getNickname() + " :Client limit out of range");
 					break;
 				}
-				std::cout << "LIMITE = |" << newLimit << "|" << std::endl;
+				// std::cout << "LIMITE = |" << newLimit << "|" << std::endl;
 				_userLimit = newLimit;
 				broadcastMessage(user->getPrefix() + " MODE " + _name + " +l " + parameter);
 			} 
