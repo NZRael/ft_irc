@@ -15,7 +15,6 @@ void Join::execute(Client *user, std::string raw_message, Server *server) const{
 		user->sendMessage(":server 461 " + user->getNickname() + " JOIN :Not enough parameters");
 		return;
 	}
-
 	iss >> key; // Key is optional
 
 	Channel* channel = server->getChannelByName(channelName);
@@ -24,9 +23,17 @@ void Join::execute(Client *user, std::string raw_message, Server *server) const{
 	}
 	channel = server->getChannelByName(channelName);
 	if (!channel) {
+		if (!key.empty()) {
+			channel = new Channel(channelName);
+			channel->setPassword(key);
+			channel->setMode('k', true, user, key, server);
+			server->addChannel(channel);
+			newChannel = true;
+		}
+		else {
 		channel = new Channel(channelName);
 		server->addChannel(channel);
-		newChannel = true;
+		newChannel = true; }
 	}
 
 	if (channel->isInviteOnly() && !channel->isInvited(user)) {

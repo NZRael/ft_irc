@@ -77,7 +77,7 @@ void Channel::broadcastMessage(const std::string& message, Client* sender)
 
 void Channel::setMode(char mode, bool set, Client* user, const std::string& parameter, Server* server)
 {
-	std::cout << "mode :|" << mode << "| set :|" << set << "| parameter:|" <<  parameter << "|" << std::endl;
+	// std::cout << "mode :|" << mode << "| set :|" << set << "| parameter:|" <<  parameter << "|" << std::endl;
 	switch(mode)
 	{
 		case 'i':
@@ -116,21 +116,18 @@ void Channel::setMode(char mode, bool set, Client* user, const std::string& para
 			{
 				long int newLimit = std::atoi(parameter.c_str());
 				if (newLimit < 0) {
-					// 501 : ERR_UMODEUNKNOWNFLAG (Mode inconnu)
             		user->sendMessage(":server 501 " + user->getNickname() + " :Cannot set negative user limit");
 					break ;
 				}
 				if (!isDigitsOnly(parameter))
 				{
 					user->sendMessage(":server 461 " + user->getNickname() + " MODE :Invalid user limit");
-					// 461 : ERR_NEEDMOREPARAMS (Paramètres invalides)
 					break;
 				}
 
 				if (parameter.size() > 8)
 				{
 					user->sendMessage(":server 472 " + user->getNickname() + " :Client limit out of range");
-					// 472 : ERR_UNKNOWNMODE (Mode inconnu, utilisé ici pour une valeur hors limites)
 					break;
 				}
 				std::cout << "LIMITE = |" << newLimit << "|" << std::endl;
@@ -139,7 +136,6 @@ void Channel::setMode(char mode, bool set, Client* user, const std::string& para
 			} 
 			else if (set) 
 			{
-				// Handle empty parameter
 				user->sendMessage(":server 461 " + user->getNickname() + " MODE :No user limit specified");
 			}
 			else if (!set && parameter.empty() && _userLimit != 0)
