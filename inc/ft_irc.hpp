@@ -20,6 +20,7 @@
 #include <cstdio>
 #include <set>
 #include <ctime>
+#include <signal.h>
 
 // Déclarations anticipées
 class Server;

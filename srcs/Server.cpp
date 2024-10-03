@@ -22,6 +22,7 @@ Server::Server(int port, const std::string& password) : port(port), password(pas
 }
 
 Server::~Server() {
+    g_server_running = false;
     stop();
 }
 
@@ -36,9 +37,11 @@ void Server::run() {
     serverPollFd.revents = 0;
     fds.push_back(serverPollFd);
 
-    while (true) {
+    g_server_running = true;
+
+    while (g_server_running) {
         int ret = poll(&fds[0], fds.size(), -1);
-        if (ret < 0) {
+        if (g_server_running && ret < 0) {
             throw std::runtime_error("Erreur lors de l'appel à poll()");
         }
         ret = 0;
@@ -192,6 +195,14 @@ void Server::stop() {
     }
     for (size_t i = 0; i < users.size(); ++i) {
             delete(users[i]);
+    }
+    users.clear();
+    for (size_t i = 0; i < channels.size(); ++i) {
+        delete(channels[i]);
+    }
+    channels.clear();
+    for (size_t i = 0; i < command.size(); ++i) {
+        delete(command[i]);
     }
     std::cout << "Serveur arrêté." << std::endl;
 }

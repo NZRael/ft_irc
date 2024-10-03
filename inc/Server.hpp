@@ -2,6 +2,8 @@
 
 #include "ft_irc.hpp"
 
+extern bool	g_server_running;
+
 class Server {
 public:
 	Server(int port, const std::string& password);
