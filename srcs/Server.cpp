@@ -96,6 +96,7 @@ void Server::handleNewConnection(std::vector<pollfd>& fds) {
         pollfd clientPollFd;
         clientPollFd.fd = clientSocket;
         clientPollFd.events = POLLIN;
+        clientPollFd.revents = 0;
         fds.push_back(clientPollFd);
         users.push_back(new Client(clientSocket));
     }
