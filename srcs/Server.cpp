@@ -33,6 +33,7 @@ void Server::run() {
     pollfd serverPollFd;
     serverPollFd.fd = serverSocket;
     serverPollFd.events = POLLIN;
+    serverPollFd.revents = 0;
     fds.push_back(serverPollFd);
 
     while (true) {

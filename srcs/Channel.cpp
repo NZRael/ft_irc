@@ -78,7 +78,6 @@ void Channel::broadcastMessage(const std::string& message, Client* sender)
 
 void Channel::setMode(char mode, bool set, Client* user, const std::string& parameter, Server* server)
 {
-	// std::cout << "mode :|" << mode << "| set :|" << set << "| parameter:|" <<  parameter << "|" << std::endl;
 	switch(mode)
 	{
 		case 'i':
@@ -143,11 +142,6 @@ void Channel::setMode(char mode, bool set, Client* user, const std::string& para
 				_userLimit = 0;
 				broadcastMessage(user->getPrefix() + " MODE " + _name + " -l ");
 			}
-			//  else 
-			// {
-    		// 	// 324 : RPL_CHANNELMODEIS (Réponse pour afficher le mode actuel)
-    		// 	user->sendMessage(":server 324 " + user->getNickname() + " " + _name + " +l " + intToString(_userLimit));
-			// }
 			break;
 	}
 }
@@ -169,7 +163,6 @@ void Channel::removeInvite(Client* client) {
 }
 
 bool Channel::isDigitsOnly(const std::string& str) const{
-    // Vérifiez chaque caractère de la chaîne
     for (size_t i = 0; i < str.length(); ++i) {
         if (!isdigit(str[i])) {
             return false;

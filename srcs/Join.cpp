@@ -15,7 +15,7 @@ void Join::execute(Client *user, std::string raw_message, Server *server) const{
 		user->sendMessage(":server 461 " + user->getNickname() + " JOIN :Not enough parameters");
 		return;
 	}
-	iss >> key; // Key is optional
+	iss >> key;// Key is optional
 
 	Channel* channel = server->getChannelByName(channelName);
 	if (!channel) {

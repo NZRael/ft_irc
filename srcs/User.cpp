@@ -46,8 +46,8 @@ void User::execute(Client *user, std::string raw_message, Server *server) const{
         user->sendMessage(":server 001 " + user->getNickname() + " :Welcome to the Internet Relay Network " + user->getPrefix());
         user->sendMessage(":server 002 " + user->getNickname() + " :Your host is server, running version 1.0");
         time_t rawtime = time(0);
-        std::string time = ctime(&rawtime);
-        user->sendMessage(":server 003 " + user->getNickname() + " :This server was created " + time);
+        std::string tea_time = ctime(&rawtime);
+        user->sendMessage(":server 003 " + user->getNickname() + " :This server was created " + tea_time);
         user->sendMessage(":server 004 " + user->getNickname() + " server 1.0 * *");
         user->setPrefix();
     }
