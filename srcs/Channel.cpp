@@ -44,6 +44,7 @@ bool Channel::removeUser(Client* user)
 	{
 		_users.erase(it);
 		_operators.erase(user);
+		
 		return (true);
 	}
 	return (false);
@@ -62,7 +63,7 @@ void Channel::addOperator(Client* user)
 
 void Channel::removeOperator(Client* user)
 {
-	_operators.erase(user);
+	_operators[user] = false;
 }
 
 void Channel::broadcastMessage(const std::string& message, Client* sender)
@@ -130,7 +131,6 @@ void Channel::setMode(char mode, bool set, Client* user, const std::string& para
 					user->sendMessage(":server 472 " + user->getNickname() + " :Client limit out of range");
 					break;
 				}
-				// std::cout << "LIMITE = |" << newLimit << "|" << std::endl;
 				_userLimit = newLimit;
 				broadcastMessage(user->getPrefix() + " MODE " + _name + " +l " + parameter);
 			} 

@@ -19,7 +19,6 @@ void User::execute(Client *user, std::string raw_message, Server *server) const{
     std::getline(iss, realname);
     realname.erase(0, realname.find_first_not_of(" "));
     if (realname.empty() || realname[0] != ':') {
-        std::cout << "realname: " << realname << std::endl;
         user->sendMessage(":server 461 " + user->getNickname() + " USER :Not enough parameters");
         return;
     }
